@@ -1,4 +1,8 @@
 /[Ll]ibrary/
+/Library/
+/../Library/
+/GalapagosUnity/Library/
+/GalapagosUnity/Temp/
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
