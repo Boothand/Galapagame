@@ -16,7 +16,6 @@ public class Pathfinder : MonoBehaviour
         Left,
         Down
     }
-    public Orientation modelOrientation = Orientation.Right;
 
     [SerializeField]bool drawDebugLines;
 
@@ -92,7 +91,7 @@ public class Pathfinder : MonoBehaviour
             if (Physics.Raycast(clickRay, out hit))
             {
                 if (hit.transform.GetComponent<Stats>() &&
-                    hit.transform.GetComponent<Stats>().validNavTarget)
+                    hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype)
                 {
                     finalTargetPos = hit.point;
                     hasTarget = true;
@@ -118,15 +117,12 @@ public class Pathfinder : MonoBehaviour
             transform.position += movementVector * Time.deltaTime * moveSpeed;
 
             //Rotate it to face the target.
-            if (modelOrientation == Orientation.Right)
-            {
-                float rotX = subTargetPos.x - transform.position.x;
-                float rotY = subTargetPos.y - transform.position.y;
+            float rotX = subTargetPos.x - transform.position.x;
+            float rotY = subTargetPos.y - transform.position.y;
 
-                float angle = Mathf.Atan2(rotY, rotX) * Mathf.Rad2Deg;
+            float angle = Mathf.Atan2(rotY, rotX) * Mathf.Rad2Deg;
 
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0f, 0f, angle)), Time.deltaTime * turnSpeed);
-            }
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0f, 0f, angle)), Time.deltaTime * turnSpeed);
         }
         else
         {

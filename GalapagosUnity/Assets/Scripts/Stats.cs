@@ -2,16 +2,12 @@
 
 public class Stats : MonoBehaviour
 {
-    public bool navObstacle;
-    public bool validNavTarget;
+    public enum NavType
+    {
+        Land,
+        Water
+    }
 
-	void Start ()
-    {
-	
-	}
-	
-	void Update () 
-    {
-	
-	}
+    public bool navObstacle;
+    public NavType navtype = NavType.Land;
 }
