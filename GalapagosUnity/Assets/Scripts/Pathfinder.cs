@@ -6,6 +6,7 @@ public class Pathfinder : MonoBehaviour
     Vector3 finalTargetPos;
     Vector3 subTargetPos;
     public float moveSpeed = 1f;
+    public float turnSpeed = 3f;
     bool hasTarget;
 
     public enum Orientation
@@ -54,7 +55,7 @@ public class Pathfinder : MonoBehaviour
                     Debug.DrawLine(transform.position, endPoint);
                 }
 
-                endPoint += Quaternion.Euler(0, 0, 70) * hit.normal;
+                endPoint += Quaternion.Euler(0, 0, 80) * hit.normal;
 
                 if (drawDebugLines)
                 {
@@ -119,7 +120,12 @@ public class Pathfinder : MonoBehaviour
             //Rotate it to face the target.
             if (modelOrientation == Orientation.Right)
             {
-                transform.forward = Vector3.Lerp(transform.forward, movementVector.normalized, Time.deltaTime);
+                float rotX = subTargetPos.x - transform.position.x;
+                float rotY = subTargetPos.y - transform.position.y;
+
+                float angle = Mathf.Atan2(rotY, rotX) * Mathf.Rad2Deg;
+
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0f, 0f, angle)), Time.deltaTime * turnSpeed);
             }
         }
         else
