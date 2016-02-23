@@ -8,14 +8,7 @@ public class Pathfinder : MonoBehaviour
     public float moveSpeed = 1f;
     public float turnSpeed = 3f;
     bool hasTarget;
-
-    public enum Orientation
-    {
-        Up,
-        Right,
-        Left,
-        Down
-    }
+    Queue<Vector3> waypoints = new Queue<Vector3>();
 
     [SerializeField]bool drawDebugLines;
 
@@ -24,50 +17,69 @@ public class Pathfinder : MonoBehaviour
         
 	}
 
-    Vector3 GetNextWaypoint()
+    void ConstructWaypoints()
     {
-        Vector3 goalDirection = (finalTargetPos - transform.position).normalized;
-
         bool foundFreeWaypoint = false;
-        Vector3 endPoint;
-        endPoint = finalTargetPos;
+        Vector3 tempPoint = transform.position;
+        float totalDistanceA = 0;
 
-        Vector3 direction = (endPoint - transform.position).normalized;
+        Vector3 tempDirection = (finalTargetPos - transform.position).normalized;
 
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, direction, Vector3.Distance(endPoint, transform.position));
-        foreach (RaycastHit hit in hits)
+        int iterations = 0;
+        while (!foundFreeWaypoint)
         {
-            //Ignore collision with your own stuff
-            if (hit.transform.root.GetInstanceID() == transform.root.GetInstanceID())
+            iterations++;
+
+            if (iterations > 1200)
             {
-                continue;
-            }
-
-            if (hit.transform.GetComponent<Stats>() &&
-                hit.transform.GetComponent<Stats>().navObstacle)
-            {
-                //Found something we can't pass through now.
-                endPoint = hit.point;
-
-                if (drawDebugLines)
-                {
-                    Debug.DrawLine(transform.position, endPoint);
-                }
-
-                endPoint += Quaternion.Euler(0, 0, 80) * hit.normal;
-
-                if (drawDebugLines)
-                {
-                    Debug.DrawLine(transform.position, endPoint, Color.red);
-                }
-
+                print("Attempts > 1200 :(");
                 break;
             }
 
-            foundFreeWaypoint = true;
-        }
+            RaycastHit[] hits = Physics.RaycastAll(tempPoint, tempDirection, Vector3.Distance(tempPoint, finalTargetPos));
+            foreach (RaycastHit hit in hits)
+            {
+                //Ignore collision with your own stuff
+                if (hit.transform.root.GetInstanceID() == transform.root.GetInstanceID())
+                {
+                    continue;
+                }
 
-        return endPoint;
+                if (hit.transform.GetComponent<Stats>() &&
+                hit.transform.GetComponent<Stats>().navObstacle)
+                {
+                    //Found something we can't pass through now.
+                    Vector3 lastPoint = tempPoint;
+
+                    tempPoint = hit.point;
+
+                    if (drawDebugLines)
+                    {
+                        Debug.DrawLine(lastPoint, tempPoint);
+                    }
+
+                    tempPoint += Quaternion.Euler(0, 0, 70) * hit.normal;
+                    tempDirection = (finalTargetPos - tempPoint).normalized;
+                    totalDistanceA += Vector3.Distance(lastPoint, tempPoint);
+
+                    waypoints.Enqueue(tempPoint);
+                    print("Enqueued point.");
+
+                    if (drawDebugLines)
+                    {
+                        Debug.DrawLine(transform.position, tempPoint, Color.red);
+                    }
+
+                    break;
+                }
+
+                totalDistanceA += Vector3.Distance(tempPoint, finalTargetPos);
+                print("Found free path to target.");
+                print("Travel distance will be: " + totalDistanceA);
+                waypoints.Enqueue(finalTargetPos);
+                foundFreeWaypoint = true;
+            }
+        }
     }
 
     public bool HasReached(Vector3 target)
@@ -93,8 +105,16 @@ public class Pathfinder : MonoBehaviour
                 if (hit.transform.GetComponent<Stats>() &&
                     hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype)
                 {
+                    waypoints.Clear();
                     finalTargetPos = hit.point;
                     hasTarget = true;
+
+                    ConstructWaypoints();
+
+                    if (waypoints.Count > 0)
+                    {
+                        subTargetPos = waypoints.Dequeue();
+                    }
                 }
             }
         }
@@ -102,9 +122,12 @@ public class Pathfinder : MonoBehaviour
         //Move it towards final target, go around obstacles.
         if (hasTarget && !HasReached(finalTargetPos))
         {
-            if (!HasReached(subTargetPos))
+            if (HasReached(subTargetPos))
             {
-                subTargetPos = GetNextWaypoint();
+                if (waypoints.Count > 0)
+                {
+                    subTargetPos = waypoints.Dequeue();
+                }
             }
 
             if (drawDebugLines)

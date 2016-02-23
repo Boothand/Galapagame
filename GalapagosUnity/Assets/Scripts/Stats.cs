@@ -5,7 +5,8 @@ public class Stats : MonoBehaviour
     public enum NavType
     {
         Land,
-        Water
+        Water,
+        None
     }
 
     public bool navObstacle;
