@@ -7,7 +7,7 @@ public class Pathfinder : MonoBehaviour
     Vector3 subTargetPos;
     public float moveSpeed = 1f;
     public float turnSpeed = 3f;
-    bool hasTarget;
+    [SerializeField]bool hasTarget;
     Queue<Vector3> waypoints = new Queue<Vector3>();
 
     [SerializeField]bool drawDebugLines;
@@ -17,13 +17,13 @@ public class Pathfinder : MonoBehaviour
         
 	}
 
-    void ConstructWaypoints()
+    float PathCalc(float angle)
     {
         bool foundFreeWaypoint = false;
         Vector3 tempPoint = transform.position;
-        float totalDistanceA = 0;
 
         Vector3 tempDirection = (finalTargetPos - transform.position).normalized;
+        float travelDistance = 0;
 
         int iterations = 0;
         while (!foundFreeWaypoint)
@@ -46,7 +46,7 @@ public class Pathfinder : MonoBehaviour
                 }
 
                 if (hit.transform.GetComponent<Stats>() &&
-                hit.transform.GetComponent<Stats>().navObstacle)
+                    hit.transform.GetComponent<Stats>().navObstacle)
                 {
                     //Found something we can't pass through now.
                     Vector3 lastPoint = tempPoint;
@@ -58,12 +58,12 @@ public class Pathfinder : MonoBehaviour
                         Debug.DrawLine(lastPoint, tempPoint);
                     }
 
-                    tempPoint += Quaternion.Euler(0, 0, 70) * hit.normal;
+                    tempPoint += Quaternion.Euler(0, 0, angle) * hit.normal;
                     tempDirection = (finalTargetPos - tempPoint).normalized;
-                    totalDistanceA += Vector3.Distance(lastPoint, tempPoint);
+                    travelDistance += Vector3.Distance(lastPoint, tempPoint);
 
                     waypoints.Enqueue(tempPoint);
-                    print("Enqueued point.");
+                    //print("Enqueued point.");
 
                     if (drawDebugLines)
                     {
@@ -73,12 +73,35 @@ public class Pathfinder : MonoBehaviour
                     break;
                 }
 
-                totalDistanceA += Vector3.Distance(tempPoint, finalTargetPos);
+                //When there is no longer any obstacle in the way of the raycast
+                travelDistance += Vector3.Distance(tempPoint, finalTargetPos);
                 print("Found free path to target.");
-                print("Travel distance will be: " + totalDistanceA);
+                print("Travel distance will be: " + travelDistance);
                 waypoints.Enqueue(finalTargetPos);
                 foundFreeWaypoint = true;
             }
+
+            if (waypoints.Count == 0)
+            {
+                print("Made 0 waypoints.");
+                break;
+            }
+        }
+
+        return travelDistance;
+    }
+
+    void ConstructWaypoints()
+    {
+        if (PathCalc(70) < PathCalc(-70))
+        {
+            waypoints.Clear();
+            PathCalc(70);
+        }
+        else
+        {
+            waypoints.Clear();
+            PathCalc(-70);
         }
     }
 
@@ -102,10 +125,10 @@ public class Pathfinder : MonoBehaviour
 
             if (Physics.Raycast(clickRay, out hit))
             {
-                if (hit.transform.GetComponent<Stats>() &&
+                if (hit.transform.root.GetInstanceID() != transform.root.GetInstanceID() &&
+                    hit.transform.GetComponent<Stats>() &&
                     hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype)
                 {
-                    waypoints.Clear();
                     finalTargetPos = hit.point;
                     hasTarget = true;
 
@@ -130,9 +153,15 @@ public class Pathfinder : MonoBehaviour
                 }
             }
 
+            if (waypoints.Count == 0)
+            {
+                subTargetPos = finalTargetPos;
+            }
+
             if (drawDebugLines)
             {
                 Debug.DrawLine(transform.position, subTargetPos, Color.red);
+                Debug.DrawLine(transform.position, finalTargetPos, Color.blue);
             }
 
             Vector3 movementVector = (subTargetPos - transform.position).normalized;
@@ -144,8 +173,9 @@ public class Pathfinder : MonoBehaviour
             float rotY = subTargetPos.y - transform.position.y;
 
             float angle = Mathf.Atan2(rotY, rotX) * Mathf.Rad2Deg;
+            Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(new Vector3(0f, 0f, angle)), Time.deltaTime * turnSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
         }
         else
         {
