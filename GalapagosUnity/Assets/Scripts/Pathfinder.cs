@@ -125,9 +125,43 @@ public class Pathfinder : MonoBehaviour
 
         return false;
     }
+
+    //Can be called from AI script, so compatible with all 'movers'.
+    public void GoToPos(Vector3 pos)
+    {
+
+        //If AI etc.
+        //Additional check for AI since they don't use a mouse to do raycasting.
+        RaycastHit hit;
+        Ray AIray = new Ray(pos - Vector3.forward * 0.5f, Vector3.forward);
+
+        if (Physics.Raycast(AIray, out hit))
+        {
+            if (hit.transform.root.GetInstanceID() != transform.root.GetInstanceID() &&
+                hit.transform.GetComponent<Stats>() &&
+                hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype)
+            {
+                print("Hit " + hit.transform.name);
+            }
+
+        }                
+
+        finalTargetPos = pos;
+        hasTarget = true;
+
+        waypoints.Clear();
+        waypoints = GetQuickestWaypoint();
+
+        if (waypoints.Count > 0)
+        {
+            subTargetPos = waypoints.Dequeue();
+        }
+    }
 	
 	void Update ()
     {
+        //if GetComponent< AI something here > (), to check if to use player input.
+
         //Input test
         if (Input.GetMouseButtonDown(1))    //Right click to set a new point
         {
@@ -140,16 +174,15 @@ public class Pathfinder : MonoBehaviour
                     hit.transform.GetComponent<Stats>() &&
                     hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype)
                 {
-                    finalTargetPos = hit.point;
-                    hasTarget = true;
 
-                    waypoints.Clear();
-                    waypoints = GetQuickestWaypoint();
-
-                    if (waypoints.Count > 0)
-                    {
-                        subTargetPos = waypoints.Dequeue();
-                    }
+                    GoToPos(hit.point);
+                }
+            }
+            else
+            {
+                if (debug)
+                {
+                    print("I can't go there.");
                 }
             }
         }
