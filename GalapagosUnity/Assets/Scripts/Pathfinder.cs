@@ -12,8 +12,10 @@ public class Pathfinder : MonoBehaviour
     [SerializeField]bool hasTarget;
     Queue<Vector3> waypoints = new Queue<Vector3>();
     [SerializeField]int maxIterations = 1500;
+	List<Vector3> debugList = new List<Vector3>();
+	List<Vector3> debugList2 = new List<Vector3>();
 
-    [SerializeField]bool debug;
+	[SerializeField]bool debug;
 
 	void Start ()
     {
@@ -21,7 +23,7 @@ public class Pathfinder : MonoBehaviour
 		mover = GetComponent<Mover>();
 	}
 
-    Queue<Vector3> GetWaypoints(float angle, out float distance)
+    Queue<Vector3> GetWaypoints(float angle, out float distance, int secondRoundLimit = -1)
     {
         Queue<Vector3> waypointQueue = new Queue<Vector3>();
         bool foundFreeWaypoint = false;
@@ -30,10 +32,19 @@ public class Pathfinder : MonoBehaviour
 
         Vector3 tempDirection = (finalTargetPos - transform.position).normalized;
 
-        int iterations = 0;
+		int iterations = 0;
         while (!foundFreeWaypoint)
         {
             iterations++;
+
+			//if (secondRoundLimit > 0 && iterations > secondRoundLimit)
+			//{
+			//	if (debug)
+			//	{
+			//		print("Second round has more waypoints, give up.");
+			//	}
+			//	break;
+			//}
 
             if (iterations > maxIterations)
             {
@@ -63,14 +74,18 @@ public class Pathfinder : MonoBehaviour
                         Debug.DrawLine(lastPoint, tempPoint);
                     }
 
+					tempPoint.z = 0f;
+
+					
 					tempPoint += hit.normal * distanceFromObstacle;
-                    tempPoint += Quaternion.Euler(0, 0, angle) * hit.normal;
+                    tempPoint += Quaternion.Euler(0, 0, angle) * hit.normal;					
+
                     tempDirection = (finalTargetPos - tempPoint).normalized;
                     distance += Vector3.Distance(lastPoint, tempPoint);
 
                     waypointQueue.Enqueue(tempPoint);
 
-                    if (debug)
+					if (debug)
                     {
                         Debug.DrawLine(transform.position, tempPoint, Color.red);
                     }
@@ -122,7 +137,22 @@ public class Pathfinder : MonoBehaviour
         float traveledDistanceA = 0;
         float traveledDistanceB = 0;
         Queue<Vector3> pathA = GetWaypoints(90, out traveledDistanceA);
-        Queue<Vector3> pathB = GetWaypoints(-90, out traveledDistanceB);
+		Queue<Vector3> pathAcopy = pathA;
+        Queue<Vector3> pathB = GetWaypoints(-90, out traveledDistanceB, pathA.Count);
+		Queue<Vector3> pathBcopy = pathB;
+
+		if (debug)
+		{
+			while (pathAcopy.Count > 0)
+			{
+				debugList.Add(pathAcopy.Dequeue());
+			}
+
+			while (pathBcopy.Count > 0)
+			{
+				debugList2.Add(pathBcopy.Dequeue());
+			}
+		}
 
         if (traveledDistanceA < traveledDistanceB)
         {
@@ -205,7 +235,20 @@ public class Pathfinder : MonoBehaviour
         //Move it towards final target, go around obstacles.
         if (hasTarget && !HasReached(finalTargetPos))
         {
-            if (HasReached(subTargetPos))
+			if (debug)
+			{
+				for (int i = 0; i < debugList.Count - 1; i++)
+				{
+					Debug.DrawLine(debugList[i], debugList[i + 1], Color.red);
+				}
+
+				for (int i = 0; i < debugList2.Count - 1; i++)
+				{
+					Debug.DrawLine(debugList2[i], debugList2[i + 1], Color.green);
+				}
+			}
+
+			if (HasReached(subTargetPos))
             {
                 if (waypoints.Count > 0)
                 {
