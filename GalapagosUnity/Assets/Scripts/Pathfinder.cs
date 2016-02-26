@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class Pathfinder : MonoBehaviour
 {
+	Stats stats;
     Vector3 finalTargetPos;
     Vector3 subTargetPos;
     public float moveSpeed = 1f;
@@ -16,7 +17,7 @@ public class Pathfinder : MonoBehaviour
 
 	void Start ()
     {
-        
+		stats = GetComponent<Stats>();
 	}
 
     Queue<Vector3> GetWaypoints(float angle, out float distance)
@@ -142,8 +143,7 @@ public class Pathfinder : MonoBehaviour
 
     //Can be called from AI script, so compatible with all 'movers'.
     public void GoToPos(Vector3 pos)
-    {
-
+    {		
         //If AI etc.
         //Additional check for AI since they don't use a mouse to do raycasting.
         RaycastHit hit;
@@ -171,32 +171,35 @@ public class Pathfinder : MonoBehaviour
 	
 	void Update ()
     {
-        //if GetComponent< AI something here > (), to check if to use player input.
+		if (stats.selected)
+		{
+			//if GetComponent< AI something here > (), to check if to use player input.
 
-        //Input test
-        if (Input.GetMouseButtonDown(1))    //Right click to set a new point
-        {
-            RaycastHit hit;
-            Ray clickRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+			//Input test
+			if (Input.GetMouseButtonDown(1))    //Right click to set a new point
+			{
+				RaycastHit hit;
+				Ray clickRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(clickRay, out hit))
-            {
-                if (hit.transform.root.GetInstanceID() != transform.root.GetInstanceID() &&
-                    hit.transform.GetComponent<Stats>() &&
-                    hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype)
-                {
+				if (Physics.Raycast(clickRay, out hit))
+				{
+					if (hit.transform.root.GetInstanceID() != transform.root.GetInstanceID() &&
+						hit.transform.GetComponent<Stats>() &&
+						hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype)
+					{
 
-                    GoToPos(hit.point);
-                }
-            }
-            else
-            {
-                if (debug)
-                {
-                    print("I can't go there.");
-                }
-            }
-        }
+						GoToPos(hit.point);
+					}
+				}
+				else
+				{
+					if (debug)
+					{
+						print("I can't go there.");
+					}
+				}
+			}
+		}
 
         //Move it towards final target, go around obstacles.
         if (hasTarget && !HasReached(finalTargetPos))
