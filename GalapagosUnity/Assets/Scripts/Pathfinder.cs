@@ -7,6 +7,7 @@ public class Pathfinder : MonoBehaviour
     Vector3 subTargetPos;
     public float moveSpeed = 1f;
     public float turnSpeed = 3f;
+	public float distanceFromObstacle = 0.75f;
     [SerializeField]bool hasTarget;
     Queue<Vector3> waypoints = new Queue<Vector3>();
     [SerializeField]int maxIterations = 1500;
@@ -32,9 +33,9 @@ public class Pathfinder : MonoBehaviour
         {
             iterations++;
 
-            if (debug && iterations > maxIterations)
+            if (iterations > maxIterations)
             {
-                print("Attempts > " + maxIterations + " :(");
+                print("Attempts > " + maxIterations + " :(\nPut breakpoint at this error plzz!");
                 break;
             }
 
@@ -60,12 +61,12 @@ public class Pathfinder : MonoBehaviour
                         Debug.DrawLine(lastPoint, tempPoint);
                     }
 
+					tempPoint += hit.normal * distanceFromObstacle;
                     tempPoint += Quaternion.Euler(0, 0, angle) * hit.normal;
                     tempDirection = (finalTargetPos - tempPoint).normalized;
                     distance += Vector3.Distance(lastPoint, tempPoint);
 
                     waypointQueue.Enqueue(tempPoint);
-                    //print("Enqueued point.");
 
                     if (debug)
                     {
@@ -86,7 +87,20 @@ public class Pathfinder : MonoBehaviour
 
                 waypointQueue.Enqueue(finalTargetPos);
                 foundFreeWaypoint = true;
+				break;
             }
+
+			if (hits.Length == 0)
+			{
+				if (debug)
+				{
+					print("No ray at all.");
+				}
+
+				waypointQueue.Enqueue(finalTargetPos);
+				foundFreeWaypoint = true;
+				break;
+			}
 
             if (waypointQueue.Count == 0)
             {
@@ -105,8 +119,8 @@ public class Pathfinder : MonoBehaviour
     {
         float traveledDistanceA = 0;
         float traveledDistanceB = 0;
-        Queue<Vector3> pathA = GetWaypoints(70, out traveledDistanceA);
-        Queue<Vector3> pathB = GetWaypoints(-70, out traveledDistanceB);
+        Queue<Vector3> pathA = GetWaypoints(90, out traveledDistanceA);
+        Queue<Vector3> pathB = GetWaypoints(-90, out traveledDistanceB);
 
         if (traveledDistanceA < traveledDistanceB)
         {
@@ -135,27 +149,24 @@ public class Pathfinder : MonoBehaviour
         RaycastHit hit;
         Ray AIray = new Ray(pos - Vector3.forward * 0.5f, Vector3.forward);
 
-        if (Physics.Raycast(AIray, out hit))
-        {
-            if (hit.transform.root.GetInstanceID() != transform.root.GetInstanceID() &&
-                hit.transform.GetComponent<Stats>() &&
-                hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype)
-            {
-                print("Hit " + hit.transform.name);
-            }
+		if (Physics.Raycast(AIray, out hit))
+		{
+			if (hit.transform.root.GetInstanceID() != transform.root.GetInstanceID() &&
+				hit.transform.GetComponent<Stats>() &&
+				hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype)
+			{
+				finalTargetPos = pos;
+				hasTarget = true;
 
-        }                
+				waypoints.Clear();
+				waypoints = GetQuickestWaypoint();
 
-        finalTargetPos = pos;
-        hasTarget = true;
-
-        waypoints.Clear();
-        waypoints = GetQuickestWaypoint();
-
-        if (waypoints.Count > 0)
-        {
-            subTargetPos = waypoints.Dequeue();
-        }
+				if (waypoints.Count > 0)
+				{
+					subTargetPos = waypoints.Dequeue();
+				}
+			}
+		}
     }
 	
 	void Update ()
@@ -220,7 +231,7 @@ public class Pathfinder : MonoBehaviour
             float angle = Mathf.Atan2(rotY, rotX) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
 
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
         }
         else
         {
