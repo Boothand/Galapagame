@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Mover))]
 public class Pathfinder : MonoBehaviour
 {
 	Stats stats;
     Vector3 finalTargetPos;
     Vector3 subTargetPos;
-    public float moveSpeed = 1f;
-    public float turnSpeed = 3f;
+	Mover mover;
 	public float distanceFromObstacle = 0.75f;
     [SerializeField]bool hasTarget;
     Queue<Vector3> waypoints = new Queue<Vector3>();
@@ -18,6 +18,7 @@ public class Pathfinder : MonoBehaviour
 	void Start ()
     {
 		stats = GetComponent<Stats>();
+		mover = GetComponent<Mover>();
 	}
 
     Queue<Vector3> GetWaypoints(float angle, out float distance)
@@ -225,7 +226,7 @@ public class Pathfinder : MonoBehaviour
 
             Vector3 movementVector = (subTargetPos - transform.position).normalized;
 
-            transform.position += movementVector * Time.deltaTime * moveSpeed;
+            transform.position += movementVector * Time.deltaTime * mover.speed;
 
             //Rotate it to face the target.
             float rotX = subTargetPos.x - transform.position.x;
@@ -234,7 +235,7 @@ public class Pathfinder : MonoBehaviour
             float angle = Mathf.Atan2(rotY, rotX) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * mover.turnSpeed);
         }
         else
         {
