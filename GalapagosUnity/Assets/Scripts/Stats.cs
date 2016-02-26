@@ -8,7 +8,11 @@ public class Stats : MonoBehaviour
         Water,
         None
     }
+	[Header("Navigation")]
+	[Tooltip("Makes movers navigate around this object's collider")]
+	public bool navObstacle;
+    public NavType navtype = NavType.None;
 
-    public bool navObstacle;
-    public NavType navtype = NavType.Land;
+	[Header("Selection")]
+	public bool selected;
 }
