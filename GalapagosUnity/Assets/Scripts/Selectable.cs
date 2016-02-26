@@ -54,6 +54,7 @@ public class Selectable : MonoBehaviour
 					if (mouseDowned && Input.GetMouseButtonUp(0))
 					{
 						stats.selected = true;
+						GameManager.selectedObject = GetComponent<Stats>();
 						mouseDowned = false;
 					}
 				}
@@ -62,6 +63,7 @@ public class Selectable : MonoBehaviour
 					if (Input.GetMouseButtonUp(0))
 					{
 						stats.selected = false;
+						GameManager.selectedObject = null;
 					}
 				}
 			}
