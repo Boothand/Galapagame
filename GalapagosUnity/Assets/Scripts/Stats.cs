@@ -8,6 +8,8 @@ public class Stats : MonoBehaviour
         Water,
         None
     }
+
+	public string typeName = "Fishing boat Z47";
 	[Header("Navigation")]
 	[Tooltip("Makes movers navigate around this object's collider")]
 	public bool navObstacle;
