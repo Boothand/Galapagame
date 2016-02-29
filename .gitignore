@@ -5,6 +5,8 @@
 /GalapagosUnity/Temp/
 /[Tt]emp/
 /[Oo]bj/
+/obj/
+/GalapagosUnity/obj/
 /[Bb]uild/
 /[Bb]uilds/
 /Assets/AssetStoreTools*
