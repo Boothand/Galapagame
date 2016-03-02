@@ -137,21 +137,33 @@ public class Pathfinder : MonoBehaviour
         float traveledDistanceA = 0;
         float traveledDistanceB = 0;
         Queue<Vector3> pathA = GetWaypoints(90, out traveledDistanceA);
-		Queue<Vector3> pathAcopy = pathA;
-        Queue<Vector3> pathB = GetWaypoints(-90, out traveledDistanceB, pathA.Count);
-		Queue<Vector3> pathBcopy = pathB;
+		Queue<Vector3> pathAcopy = new Queue<Vector3>(pathA);
+		Queue<Vector3> pathB = GetWaypoints(-90, out traveledDistanceB, pathA.Count);
+		Queue<Vector3> pathBcopy = new Queue<Vector3>(pathB);
 
 		if (debug)
 		{
+			debugList.Clear();
 			while (pathAcopy.Count > 0)
 			{
 				debugList.Add(pathAcopy.Dequeue());
 			}
 
+			debugList2.Clear();
 			while (pathBcopy.Count > 0)
 			{
 				debugList2.Add(pathBcopy.Dequeue());
 			}
+		}
+
+		if (pathA.Count > maxIterations - 2)
+		{
+			return pathB;
+		}
+
+		if (pathB.Count > maxIterations - 2)
+		{
+			return pathA;
 		}
 
         if (traveledDistanceA < traveledDistanceB)
