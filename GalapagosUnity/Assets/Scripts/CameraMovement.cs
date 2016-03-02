@@ -4,6 +4,7 @@ public class CameraMovement : MonoBehaviour
 {
     public float speed = 1f;
     Vector3 targetPos;
+    public float scrollDistance = 10f;
 
 	void Start ()
     {
@@ -12,8 +13,12 @@ public class CameraMovement : MonoBehaviour
 	
 	void Update ()
     {
+		if (Input.GetMouseButton(2))
+		{
+			targetPos += new Vector3(-Input.GetAxisRaw("Mouse X"), -Input.GetAxisRaw("Mouse Y"), 0f) * speed * Time.deltaTime;
+		}
         targetPos += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f) * speed * Time.deltaTime;
-//        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * speed);
-        transform.position = targetPos;
+		targetPos += Vector3.forward * Input.GetAxis("Mouse ScrollWheel") * scrollDistance;
+		transform.position = targetPos;
 	}
 }
