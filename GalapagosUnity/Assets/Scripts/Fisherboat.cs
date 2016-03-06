@@ -9,72 +9,51 @@ public class Fisherboat : Boat
 	public int fish = 0;
 	public int workers;
 
-	int fishGain = 0;
+	public int fishGainDelay = 1;
+	public int fishGainSmall = 5;
+	public int fishGainBig = 12;
 	int fishSpaceLeft = 0;
-
-	bool stopFishing;
 
 	void Start ()
 	{
-	}
-	
-	void Update ()
-	{
-		fishSpaceLeft = fishCapacity - fish;
+
 	}
 
-	void OnCollisionStay(Collision col)
+	void OnCollisionEnter(Collision col)
 	{
-		if (col.gameObject.tag == "FishingZoneSmall" && this.gameObject.tag == "FishingBoat")
+		if (col.transform.GetComponent<FishZone>())
 		{
-			StartCoroutine(fishing());
-		}
-		if (col.gameObject.tag == "FishingZoneBig" && this.gameObject.tag == "FishingBoat")
-		{
-			StartCoroutine(fishingBig());
+			StartCoroutine(GainFish(fishGainSmall, fishGainDelay, col.transform.GetComponent<FishZone>()));
 		}
 	}
 
 	void OnCollisionExit(Collision col)
 	{
-		if (col.gameObject.tag == "FishingZoneSmall" && this.gameObject.tag == "FishingBoat" || col.gameObject.tag == "FishingZoneBig" && this.gameObject.tag == "FishingBoat")
+		if (col.transform.GetComponent<FishZone>())
 		{
-			stopFishing = true;
+			StopCoroutine("GainFish");
 		}
 	}
 
-	IEnumerator fishing ()
-	{
-		fishGain = 5;
-
+    IEnumerator GainFish(int amount, float delay, FishZone zone)
+    {
 		while (fishSpaceLeft > 0)
 		{
-			fish += fishGain;
+			fish += zone.GetFished(workers);
 
-			if (stopFishing == true)
-				yield break;
-
-			yield return new WaitForSeconds(1);
+			yield return new WaitForSeconds(delay);
 		}
 	}
 
-	IEnumerator fishingBig()
+	void Update()
 	{
-		fishGain = 12;
+		fishSpaceLeft = fishCapacity - fish;
 
-		while (fishSpaceLeft > 0)
+		if (fishSpaceLeft < 0 ||
+			fish > fishCapacity)
 		{
-			fish += fishGain;
-			if (fishSpaceLeft < fishGain)
-			{
-				fish += fishSpaceLeft;
-				yield break;
-			}
-
-			if (stopFishing == true)
-				yield break;
-
-			yield return new WaitForSeconds(2);
+			fishSpaceLeft = 0;
+			fish = fishCapacity;
 		}
 	}
 }
