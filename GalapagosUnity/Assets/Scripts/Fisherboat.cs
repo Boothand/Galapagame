@@ -7,11 +7,9 @@ public class Fisherboat : Boat
 	public int workerCapacity = 10;
 	public int fishCapacity = 1000;
 	public int fish = 0;
-	public int workers;
+	public int workers = 5;
 
 	public int fishGainDelay = 1;
-	public int fishGainSmall = 5;
-	public int fishGainBig = 12;
 	int fishSpaceLeft = 0;
 
 	void Start ()
@@ -23,7 +21,7 @@ public class Fisherboat : Boat
 	{
 		if (col.transform.GetComponent<FishZone>())
 		{
-			StartCoroutine(GainFish(fishGainSmall, fishGainDelay, col.transform.GetComponent<FishZone>()));
+			StartCoroutine(GainFish(fishGainDelay, col.transform.GetComponent<FishZone>()));
 		}
 	}
 
@@ -35,7 +33,7 @@ public class Fisherboat : Boat
 		}
 	}
 
-    IEnumerator GainFish(int amount, float delay, FishZone zone)
+    IEnumerator GainFish(float delay, FishZone zone)
     {
 		while (fishSpaceLeft > 0)
 		{

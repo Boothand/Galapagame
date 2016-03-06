@@ -4,8 +4,8 @@ public class FishZone : MonoBehaviour
 {
 	public int fishAmount = 20000;
 	public int maxFishAmount = 30000;
-	public float respawnTime = 1;
-	public int respawnAmount = 5;
+	public float respawnTime = 2f;
+	public int respawnAmount = 2;
 	float timer;
 	int zoneTypeFactor;
 	public ZoneType zoneType = ZoneType.Medium;
@@ -27,6 +27,7 @@ public class FishZone : MonoBehaviour
 		int loss = (int)(workersOnBoard * shipType * zoneTypeFactor) / 2;
 		fishAmount -= loss;
 
+		print(loss);
 		return loss;
 	}
 	
