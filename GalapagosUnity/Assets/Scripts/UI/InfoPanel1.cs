@@ -23,6 +23,7 @@ public class InfoPanel1 : MonoBehaviour
 			{
 				selectedObjectName.text = GameManager.selectedObject.typeNameFishingBoat;
 				infoField1.enabled = true;
+				cargoSpace.enabled = true;
 				infoField1.text = "Workers: " + GameManager.selectedObject.GetComponent<Fisherboat>().workers + "/" + GameManager.selectedObject.GetComponent<Fisherboat>().workerCapacity;
 				cargoSpace.text = "Cargo Space: " + GameManager.selectedObject.GetComponent<Fisherboat>().fish + "/" + GameManager.selectedObject.GetComponent<Fisherboat>().fishCapacity;
 			}
@@ -39,6 +40,7 @@ public class InfoPanel1 : MonoBehaviour
 		{
 			selectedObjectName.enabled = false;
 			infoField1.enabled = false;
+			cargoSpace.enabled = false;
 		}
 	}
 }
