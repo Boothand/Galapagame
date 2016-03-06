@@ -65,7 +65,10 @@ public class Selectable : MonoBehaviour
 					if (Input.GetMouseButtonUp(0))
 					{
 						stats.selected = false;
-						GameManager.selectedObject = null;
+						if (GameManager.selectedObject == GetComponent<Stats>())
+						{
+							GameManager.selectedObject = null;
+						}
 					}
 				}
 			}

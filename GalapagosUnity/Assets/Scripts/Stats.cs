@@ -9,10 +9,10 @@ public class Stats : MonoBehaviour
         None
     }
 
-	public string typeNameFishingBoat = "Fishing boat Z47";
-	public string typeNameGovernmentVessel = "Goverment Vessel";
-	public string typeNameWorkBuilding = "Your Fishery";
-	public string TypenameNotYourBuilding = "Fishery of player X";
+	public string typeName = "Unnamed Object";
+	//public string typeNameGovernmentVessel = "Goverment Vessel";
+	//public string typeNameWorkBuilding = "Your Fishery";
+	//public string TypenameNotYourBuilding = "Fishery of player X";
 
 	[Header("Navigation")]
 	[Tooltip("Makes movers navigate around this object's collider")]
