@@ -13,6 +13,8 @@ public class Selectable : MonoBehaviour
 	public float lineOffset = 0.4f;
 	public float lineZ = -0.1f;
 
+	public static bool clicked;
+
 	void Start ()
 	{
 		stats = GetComponent<Stats>();
