@@ -28,6 +28,12 @@ public class InfoPanel1 : MonoBehaviour
 				cargoSpace.enabled = true;
 				cargoSpace.text = "Fish: " + boat.fish + "/" + boat.fishCapacity;
 			}
+			else
+			{
+				infoField1.enabled = false;
+				cargoSpace.enabled = false;
+
+			}
 		}
 		else
 		{
