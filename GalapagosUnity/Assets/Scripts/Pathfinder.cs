@@ -9,7 +9,7 @@ public class Pathfinder : MonoBehaviour
     Vector3 subTargetPos;
 	Mover mover;
 	public float distanceFromObstacle = 0.75f;
-    [SerializeField]bool hasTarget;
+    public bool hasTarget;
     Queue<Vector3> waypoints = new Queue<Vector3>();
     [SerializeField]int maxIterations = 1500;
 	List<Vector3> debugList = new List<Vector3>();
