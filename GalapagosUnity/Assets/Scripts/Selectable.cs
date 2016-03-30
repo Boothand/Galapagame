@@ -4,14 +4,23 @@
 [RequireComponent(typeof(Collider))]
 public class Selectable : MonoBehaviour
 {
+	[SerializeField]
+	bool alwaysVisible;
 	Stats stats;
 	bool mouseDowned;
 	LineRenderer[] lines = new LineRenderer[4];
-	public Material lineMaterial;
-	public float lineWidth = 0.04f;
-	public Color lineColor = Color.white;
-	public float lineOffset = 0.4f;
-	public float lineZ = -0.1f;
+	[SerializeField]
+	Material lineMaterial;
+	[SerializeField]
+	float lineWidth = 0.04f;
+	[SerializeField]
+	Color lineColor = Color.white;
+	[SerializeField]
+	Color inactiveColor = Color.red;
+	[SerializeField]
+	float lineOffset = 0.4f;
+	[SerializeField]
+	float lineZ = -0.1f;
 
 	public static bool clicked;
 
@@ -32,6 +41,31 @@ public class Selectable : MonoBehaviour
 
 			lines[i] = child.GetComponent<LineRenderer>();
 		}
+	}
+
+	void DrawLines(Color color)
+	{
+		foreach (LineRenderer lr in lines)
+		{
+			lr.enabled = true;
+			lr.SetWidth(lineWidth, lineWidth);
+			lr.SetColors(color, color);
+			lr.material = lineMaterial;
+		}
+
+		Collider collider = GetComponent<Collider>();
+
+		lines[0].SetPosition(0, new Vector3(collider.bounds.min.x - lineOffset, collider.bounds.min.y - lineOffset, lineZ));
+		lines[0].SetPosition(1, new Vector3(collider.bounds.min.x - lineOffset, collider.bounds.max.y + lineOffset, lineZ));
+
+		lines[1].SetPosition(0, new Vector3(collider.bounds.min.x - lineOffset, collider.bounds.min.y - lineOffset, lineZ));
+		lines[1].SetPosition(1, new Vector3(collider.bounds.max.x + lineOffset, collider.bounds.min.y - lineOffset, lineZ));
+
+		lines[2].SetPosition(0, new Vector3(collider.bounds.max.x + lineOffset, collider.bounds.min.y - lineOffset, lineZ));
+		lines[2].SetPosition(1, new Vector3(collider.bounds.max.x + lineOffset, collider.bounds.max.y + lineOffset, lineZ));
+
+		lines[3].SetPosition(0, new Vector3(collider.bounds.max.x + lineOffset, collider.bounds.max.y + lineOffset, lineZ));
+		lines[3].SetPosition(1, new Vector3(collider.bounds.min.x - lineOffset, collider.bounds.max.y + lineOffset, lineZ));
 	}
 	
 	void Update ()
@@ -77,28 +111,11 @@ public class Selectable : MonoBehaviour
 		//Draw lines around selected object
 		if (stats.selected)
 		{
-			foreach (LineRenderer lr in lines)
-			{
-				lr.enabled = true;
-				lr.SetWidth(lineWidth, lineWidth);
-				lr.SetColors(lineColor, lineColor);
-				lr.material = lineMaterial;
-			}
-
-			Collider collider = GetComponent<Collider>();
-
-			lines[0].SetPosition(0, new Vector3(collider.bounds.min.x - lineOffset, collider.bounds.min.y - lineOffset, lineZ));
-			lines[0].SetPosition(1, new Vector3(collider.bounds.min.x - lineOffset, collider.bounds.max.y + lineOffset, lineZ));
-
-			lines[1].SetPosition(0, new Vector3(collider.bounds.min.x - lineOffset, collider.bounds.min.y - lineOffset, lineZ));
-			lines[1].SetPosition(1, new Vector3(collider.bounds.max.x + lineOffset, collider.bounds.min.y - lineOffset, lineZ));
-
-			lines[2].SetPosition(0, new Vector3(collider.bounds.max.x + lineOffset, collider.bounds.min.y - lineOffset, lineZ));
-			lines[2].SetPosition(1, new Vector3(collider.bounds.max.x + lineOffset, collider.bounds.max.y + lineOffset, lineZ));
-
-			lines[3].SetPosition(0, new Vector3(collider.bounds.max.x + lineOffset, collider.bounds.max.y + lineOffset, lineZ));
-			lines[3].SetPosition(1, new Vector3(collider.bounds.min.x - lineOffset, collider.bounds.max.y + lineOffset, lineZ));
-
+			DrawLines(lineColor);
+		}
+		else if (alwaysVisible)
+		{
+			DrawLines(inactiveColor);
 		}
 		else
 		{
