@@ -5,7 +5,7 @@ public class InfoPanel1 : MonoBehaviour
 {
 	public Text selectedObjectName;
 	public Text infoField1;
-	public Text cargoSpace;
+	public Text infoField2;
 
 
 	void Start ()
@@ -25,21 +25,28 @@ public class InfoPanel1 : MonoBehaviour
 				Fisherboat boat = GameManager.selectedObject.GetComponent<Fisherboat>();
 				infoField1.enabled = true;
 				infoField1.text = "Workers: " + boat.workers + "/" + boat.workerCapacity;
-				cargoSpace.enabled = true;
-				cargoSpace.text = "Fish: " + boat.fish + "/" + boat.fishCapacity;
+				infoField2.enabled = true;
+				infoField2.text = "Fish: " + boat.fish + "/" + boat.fishCapacity;
+			}
+			else if (GameManager.selectedObject.GetComponent<FishZone>())
+			{
+				FishZone zone = GameManager.selectedObject.GetComponent<FishZone>();
+
+				infoField1.enabled = true;
+				infoField1.text = "Fish remaining: " + zone.fishAmount.ToString() + "/" + zone.maxFishAmount.ToString();
+				infoField2.enabled = false;
 			}
 			else
 			{
 				infoField1.enabled = false;
-				cargoSpace.enabled = false;
-
+				infoField2.enabled = false;
 			}
 		}
 		else
 		{
 			selectedObjectName.enabled = false;
 			infoField1.enabled = false;
-			cargoSpace.enabled = false;
+			infoField2.enabled = false;
 		}
 	}
 }
