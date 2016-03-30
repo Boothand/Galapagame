@@ -4,6 +4,10 @@ using System.Collections;
 
 public class Fisherboat : Boat
 {
+	[SerializeField]
+	Transform net;
+	public bool isFishing;
+
 	public int workerCapacity = 10;
 	public int fishCapacity = 1000;
 	public int fish = 0;
@@ -12,16 +16,49 @@ public class Fisherboat : Boat
 	public int fishGainDelay = 1;
 	int fishSpaceLeft = 0;
 
+	IEnumerator fishRoutine;
+
 	void Start ()
 	{
+		if (!net)
+		{
+			net = transform.FindChild("Net");
+		}
 
+		net.gameObject.SetActive(false);
 	}
 
-	void OnCollisionEnter(Collision col)
+	//void OnCollisionEnter(Collision col)
+	//{
+	//	if (col.transform.GetComponent<FishZone>())
+	//	{
+	//		net.gameObject.SetActive(true);
+	//		StartCoroutine(GainFish(fishGainDelay, col.transform.GetComponent<FishZone>()));
+	//	}
+	//}
+
+	void OnCollisionStay(Collision col)
 	{
 		if (col.transform.GetComponent<FishZone>())
 		{
-			StartCoroutine(GainFish(fishGainDelay, col.transform.GetComponent<FishZone>()));
+			if (!GetComponent<Pathfinder>().hasTarget)
+			{
+				if (!isFishing)
+				{
+					print("Started coroutine");
+					fishRoutine = GainFish(fishGainDelay, col.transform.GetComponent<FishZone>());
+					StartCoroutine(fishRoutine);
+				}
+			}
+			else
+			{
+				if (fishRoutine != null)
+				{
+					StopCoroutine(fishRoutine);
+					isFishing = false;
+					net.gameObject.SetActive(false);
+				}
+			}
 		}
 	}
 
@@ -29,7 +66,8 @@ public class Fisherboat : Boat
 	{
 		if (col.transform.GetComponent<FishZone>())
 		{
-			StopCoroutine("GainFish");
+			net.gameObject.SetActive(false);
+			StopCoroutine(fishRoutine);
 		}
 	}
 
@@ -37,6 +75,8 @@ public class Fisherboat : Boat
     {
 		while (fishSpaceLeft > 0)
 		{
+			net.gameObject.SetActive(true);
+			isFishing = true;
 			fish += zone.GetFished(workers);
 
 			yield return new WaitForSeconds(delay);
