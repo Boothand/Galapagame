@@ -41,11 +41,10 @@ public class Fisherboat : Boat
 	{
 		if (col.transform.GetComponent<FishZone>())
 		{
-			if (!GetComponent<Pathfinder>().hasTarget)
+			if (fishSpaceLeft > 0 && !GetComponent<Pathfinder>().hasTarget)
 			{
 				if (!isFishing)
 				{
-					print("Started coroutine");
 					fishRoutine = GainFish(fishGainDelay, col.transform.GetComponent<FishZone>());
 					StartCoroutine(fishRoutine);
 				}
