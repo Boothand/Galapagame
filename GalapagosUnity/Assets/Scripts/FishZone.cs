@@ -26,8 +26,7 @@ public class FishZone : MonoBehaviour
 	{
 		int loss = (int)(workersOnBoard * shipType * zoneTypeFactor) / 2;
 		fishAmount -= loss;
-
-		print(loss);
+		
 		return loss;
 	}
 	
