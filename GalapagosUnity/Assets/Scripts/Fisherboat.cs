@@ -20,6 +20,7 @@ public class Fisherboat : Boat
 
 	void Start ()
 	{
+		base.BaseStart();
 		if (!net)
 		{
 			net = transform.FindChild("Net");
@@ -84,6 +85,8 @@ public class Fisherboat : Boat
 
 	void Update()
 	{
+		base.BaseUpdate();
+
 		fishSpaceLeft = fishCapacity - fish;
 
 		if (fishSpaceLeft < 0 ||

@@ -2,16 +2,17 @@
 
 public class Mover : MonoBehaviour
 {
-	public GameManager.Faction faction;
+	[HideInInspector]
+	Stats stats;
 	public float speed = 1f;
 	public float turnSpeed = 3f;
 
-	void Start ()
+	internal void BaseStart ()
 	{
-		
+		stats = GetComponent<Stats>();
 	}
 	
-	void Update ()
+	internal void BaseUpdate ()
 	{
 		
 	}

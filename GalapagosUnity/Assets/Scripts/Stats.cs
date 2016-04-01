@@ -9,6 +9,18 @@ public class Stats : MonoBehaviour
         None
     }
 
+	public enum Faction
+	{
+		Player,
+		Red,
+		Green,
+		Blue,
+		Government,
+		None
+	}
+
+	public Faction faction;
+
 	public string typeName = "Unnamed Object";
 	//public string typeNameGovernmentVessel = "Goverment Vessel";
 	//public string typeNameWorkBuilding = "Your Fishery";

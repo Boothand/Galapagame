@@ -219,7 +219,8 @@ public class Pathfinder : MonoBehaviour
 			//if GetComponent< AI something here > (), to check if to use player input.
 
 			//Input test
-			if (Input.GetMouseButtonDown(1))    //Right click to set a new point
+			if (GetComponent<Stats>().faction == Stats.Faction.Player &&
+				Input.GetMouseButtonDown(1))    //Right click to set a new point
 			{
 				RaycastHit hit;
 				Ray clickRay = Camera.main.ScreenPointToRay(Input.mousePosition);

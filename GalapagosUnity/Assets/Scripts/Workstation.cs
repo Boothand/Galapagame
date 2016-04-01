@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 
-public class Workstation : MonoBehaviour
+public class Workstation : OwnableStructure
 {
-	public GameManager.Faction faction;
-	
+	public float fishAmount;
+
 	void Start()
 	{
-
+		base.BaseStart();
 	}
 	
 	void Update()
 	{
-
+		base.BaseUpdate();
 	}
 }

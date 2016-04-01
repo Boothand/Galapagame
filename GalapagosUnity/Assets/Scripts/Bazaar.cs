@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 
-public class GovermentVessel : Boat
+public class Bazaar : OwnableStructure
 {
-	
+
+
 	void Start ()
 	{
 		base.BaseStart();
