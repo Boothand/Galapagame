@@ -22,9 +22,9 @@ public class GameManager : MonoBehaviour
 	void Start ()
 	{
 		//shows the time.
-		month = 12;
+		month = 1;
 		year = 0;
-		currentDay = 29;
+		currentDay = 1;
 		
 		time(month);
 
