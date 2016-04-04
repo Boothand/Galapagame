@@ -19,7 +19,7 @@ public class Stats : MonoBehaviour
 		None
 	}
 
-	public Faction faction;
+	public Faction faction = Faction.None;
 
 	public string typeName = "Unnamed Object";
 	//public string typeNameGovernmentVessel = "Goverment Vessel";

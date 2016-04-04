@@ -7,16 +7,31 @@ public class InfoPanel1 : MonoBehaviour
 	public Text infoField1;
 	public Text infoField2;
 	public Text factionText;
+	public CanvasGroup workstationButtons;
+	public CanvasGroup fishboatButtons;
 
 
 	void Start ()
 	{
 		
 	}
+
+	public void FishBoatBuyWorker()
+	{
+		GameManager.selectedObject.GetComponent<Fisherboat>().BuyWorker();
+	}
 	
 	void Update ()
 	{
 		//Init
+		workstationButtons.alpha = 0f;
+		workstationButtons.interactable = false;
+		workstationButtons.blocksRaycasts = false;
+
+		fishboatButtons.alpha = 0f;
+		fishboatButtons.interactable = false;
+		fishboatButtons.blocksRaycasts = false;
+
 		selectedObjectName.enabled = false;
 		infoField1.enabled = false;
 		infoField2.enabled = false;
@@ -48,6 +63,10 @@ public class InfoPanel1 : MonoBehaviour
 				infoField1.text = "Workers: " + boat.workers + "/" + boat.workerCapacity;
 				infoField2.enabled = true;
 				infoField2.text = "Fish: " + boat.fish + "/" + boat.fishCapacity;
+
+				fishboatButtons.alpha = 1f;
+				fishboatButtons.interactable = true;
+				fishboatButtons.blocksRaycasts = true;
 			}
 			else if (GameManager.selectedObject.GetComponent<FishZone>())
 			{
@@ -60,6 +79,9 @@ public class InfoPanel1 : MonoBehaviour
 			{
 				Workstation station = GameManager.selectedObject.GetComponent<Workstation>();
 
+				workstationButtons.alpha = 1f;
+				workstationButtons.interactable = true;
+				workstationButtons.blocksRaycasts = true;
 				infoField1.enabled = true;
 				infoField1.text = "Fish in storage: " + station.fishAmount;
 			}

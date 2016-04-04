@@ -71,7 +71,8 @@ public class Selectable : MonoBehaviour
 	void Update ()
 	{
 		//Click selection
-		if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonUp(0))
+		if (/*!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() &&*/
+			(Input.GetMouseButtonDown(0) || Input.GetMouseButtonUp(0)))
 		{
 			RaycastHit hit;
 
@@ -96,7 +97,8 @@ public class Selectable : MonoBehaviour
 				}
 				else
 				{
-					if (Input.GetMouseButtonUp(0))
+					if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() &&
+						Input.GetMouseButtonUp(0))
 					{
 						stats.selected = false;
 						if (GameManager.selectedObject == GetComponent<Stats>())

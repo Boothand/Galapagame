@@ -83,6 +83,15 @@ public class Fisherboat : Boat
 		}
 	}
 
+	public void BuyWorker()
+	{
+		if (workers < workerCapacity)
+		{
+			workers++;
+			//Tap penga, referanse til factionskript.
+		}
+	}
+
 	void Update()
 	{
 		base.BaseUpdate();
