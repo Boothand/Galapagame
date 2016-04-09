@@ -72,6 +72,7 @@ public class TimeScript : MonoBehaviour {
 		timeControl.text = "Year " + year + ", " + currentDay + ". " + monthName;
 
 		StartCoroutine(timeTable(2));
+		yield break;
 	}
 
 
