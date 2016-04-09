@@ -85,6 +85,10 @@ public class InfoPanel1 : MonoBehaviour
 				infoField1.enabled = true;
 				infoField1.text = "Fish in storage: " + station.fishAmount;
 			}
+			else if (GameManager.selectedObject.GetComponent<Bazaar>())
+			{
+
+			}
 		}
 	}
 }
