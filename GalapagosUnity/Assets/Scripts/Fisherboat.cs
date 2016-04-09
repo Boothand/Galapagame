@@ -8,6 +8,8 @@ public class Fisherboat : Boat
 	Transform net;
 	public bool isFishing;
 
+	public Stats stats;
+
 	public int workerCapacity = 10;
 	public int fishCapacity = 1000;
 	public int fish = 0;
@@ -20,6 +22,7 @@ public class Fisherboat : Boat
 
 	void Start ()
 	{
+		stats = GetComponent<Stats>();
 		base.BaseStart();
 		if (!net)
 		{
