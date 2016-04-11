@@ -3,12 +3,10 @@
 public class Workstation : OwnableStructure
 {
 	public float fishAmount;
-	Stats stats2;
 
 	void Start()
 	{
 		base.BaseStart();
-		stats2 = GetComponent<Stats>();
 	}
 	
 	void Update()
@@ -18,7 +16,8 @@ public class Workstation : OwnableStructure
 
 	void OnCollisionEnter(Collision col)
 	{
-		if (col.transform.GetComponent<Fisherboat>().stats.faction == stats2.faction)
+		if (col.transform.GetComponent<Fisherboat>() &&
+			col.transform.GetComponent<Fisherboat>().stats.faction == stats.faction)
 		{
 			fishAmount += col.transform.GetComponent<Fisherboat>().fish;
 			col.transform.GetComponent<Fisherboat>().fish = 0;

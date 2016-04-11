@@ -4,7 +4,7 @@ public class OwnableStructure : MonoBehaviour
 {
 	[SerializeField]
 	Transform flag;
-	Stats stats;
+	internal Stats stats;
 
 	internal void BaseStart ()
 	{

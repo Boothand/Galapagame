@@ -22,12 +22,12 @@ public class TimeScript : MonoBehaviour {
 	void Start () {
 		//shows the time.
 		month = 1;
-		year = 0;
+		year = 2010;
 		currentDay = 1;
 
 		time(month);
 
-		timeControl.text = "Year " + year + ", " + currentDay + ". " + monthName;
+		timeControl.text = currentDay + ". " + monthName + " " + year;
 
 		StartCoroutine(timeTable(2));
 		//end of time part of gamemanager script
@@ -53,7 +53,7 @@ public class TimeScript : MonoBehaviour {
 				currentDay = 1;
 				print("Printer");
 				time(month);
-				timeControl.text = "Year " + year + ", " + currentDay + ". " + monthName;
+				timeControl.text = currentDay + ". " + monthName + " " + year;
 				yield return new WaitForSeconds(2);
 				StartCoroutine(timeTable(0));
 				yield break;
@@ -69,7 +69,7 @@ public class TimeScript : MonoBehaviour {
 
 		time(month);
 
-		timeControl.text = "Year " + year + ", " + currentDay + ". " + monthName;
+		timeControl.text = currentDay + ". " + monthName + " " + year;
 
 		StartCoroutine(timeTable(2));
 		yield break;
