@@ -3,10 +3,14 @@
 public class Workstation : OwnableStructure
 {
 	public float fishAmount;
+	public float companyMoney;
 
 	void Start()
 	{
 		base.BaseStart();
+
+		companyMoney = 1000;
+
 	}
 	
 	void Update()
