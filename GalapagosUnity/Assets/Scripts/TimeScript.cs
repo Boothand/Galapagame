@@ -37,7 +37,11 @@ public class TimeScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
+		if (currentDay == 1 && year == 2025 && month == 1)
+		{
+			StopAllCoroutines();
+		}
 	}
 
 	IEnumerator timeTable(int secondsToWait)
