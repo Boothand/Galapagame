@@ -32,14 +32,6 @@ public class Fisherboat : Boat
 		net.gameObject.SetActive(false);
 	}
 
-	//void OnCollisionEnter(Collision col)
-	//{
-	//	if (col.transform.GetComponent<FishZone>())
-	//	{
-	//		net.gameObject.SetActive(true);
-	//		StartCoroutine(GainFish(fishGainDelay, col.transform.GetComponent<FishZone>()));
-	//	}
-	//}
 
 	void OnCollisionStay(Collision col)
 	{
