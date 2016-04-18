@@ -9,24 +9,92 @@ public class InfoPanel1 : MonoBehaviour
 	public Text factionText;
 	public CanvasGroup workstationButtons;
 	public CanvasGroup fishboatButtons;
+	public CanvasGroup missionButtons;
+	public CanvasGroup bazaarButtons;
+
+	public GameObject panelGameobject;
+	public GameObject missionPanel;
+	public Button exitMission;
 
 
 	void Start ()
 	{
-		
+		panelGameobject.SetActive(false);
+		exitMission.enabled = false;
+		exitMission.gameObject.SetActive(false);
+		missionPanel.SetActive(false);
 	}
 
 	public void FishBoatBuyWorker()
 	{
 		GameManager.selectedObject.GetComponent<Fisherboat>().BuyWorker();
 	}
-	
+
+	public void SellFish()
+	{
+		GameManager.selectedObject.GetComponent<Bazaar>().SellAllFish();
+	}
+
+	public void CheckMissions()
+	{
+		panelGameobject.SetActive(true);
+		exitMission.enabled = true;
+		exitMission.gameObject.SetActive(true);
+	}
+
+	public void ExitMissionPanel()
+	{
+		panelGameobject.SetActive(false);
+		exitMission.enabled = false;
+		exitMission.gameObject.SetActive(false);
+	}
+
+	public void exitMisionLogPanel()
+	{
+		missionPanel.SetActive(false);
+		missionPanel.gameObject.transform.FindChild("SurvivalMission").gameObject.transform.FindChild("Mission Name").GetComponent<Text>().enabled = false;
+		missionPanel.gameObject.transform.FindChild("FishingProblems").gameObject.transform.FindChild("Mission Name").GetComponent<Text>().enabled = false;
+		missionPanel.gameObject.transform.FindChild("Timeline").gameObject.transform.FindChild("Mission Name").GetComponent<Text>().enabled = false;
+
+		missionPanel.gameObject.transform.FindChild("SurvivalMission").gameObject.transform.FindChild("Survival of factions").gameObject.transform.FindChild("Text").GetComponent<Text>().enabled = false;
+		missionPanel.gameObject.transform.FindChild("FishingProblems").gameObject.transform.FindChild("Fishermens impact").gameObject.transform.FindChild("Text").GetComponent<Text>().enabled = false;
+		missionPanel.gameObject.transform.FindChild("Timeline").gameObject.transform.FindChild("Time waits for no one").gameObject.transform.FindChild("Text").GetComponent<Text>().enabled = false;
+	}
+
+	public void MissionLog1()
+	{
+		missionPanel.SetActive(true);
+		missionPanel.gameObject.transform.FindChild("SurvivalMission").gameObject.transform.FindChild("Mission Name").GetComponent<Text>().text = missionPanel.gameObject.transform.FindChild("SurvivalMission").gameObject.transform.FindChild("Survival of factions").name;
+		missionPanel.gameObject.transform.FindChild("SurvivalMission").gameObject.transform.FindChild("Mission Name").GetComponent<Text>().enabled = true;
+		missionPanel.gameObject.transform.FindChild("SurvivalMission").gameObject.transform.FindChild("Survival of factions").gameObject.transform.FindChild("Text").GetComponent<Text>().enabled = true;
+	}
+
+	public void MissionLog2()
+	{
+		missionPanel.SetActive(true);
+		missionPanel.gameObject.transform.FindChild("FishingProblems").gameObject.transform.FindChild("Mission Name").GetComponent<Text>().text = missionPanel.gameObject.transform.FindChild("FishingProblems").gameObject.transform.FindChild("Fishermens impact").name;
+		missionPanel.gameObject.transform.FindChild("FishingProblems").gameObject.transform.FindChild("Mission Name").GetComponent<Text>().enabled = true;
+		missionPanel.gameObject.transform.FindChild("FishingProblems").gameObject.transform.FindChild("Fishermens impact").gameObject.transform.FindChild("Text").GetComponent<Text>().enabled = true;
+	}
+
+	public void MissionLog3()
+	{
+		missionPanel.SetActive(true);
+		missionPanel.gameObject.transform.FindChild("Timeline").gameObject.transform.FindChild("Mission Name").GetComponent<Text>().text = missionPanel.gameObject.transform.FindChild("Timeline").gameObject.transform.FindChild("Time waits for no one").name;
+		missionPanel.gameObject.transform.FindChild("Timeline").gameObject.transform.FindChild("Mission Name").GetComponent<Text>().enabled = true;
+		missionPanel.gameObject.transform.FindChild("Timeline").gameObject.transform.FindChild("Time waits for no one").gameObject.transform.FindChild("Text").GetComponent<Text>().enabled = true;
+	}
+
 	void Update ()
 	{
 		//Init
 		workstationButtons.alpha = 0f;
 		workstationButtons.interactable = false;
 		workstationButtons.blocksRaycasts = false;
+
+		bazaarButtons.alpha = 0f;
+		bazaarButtons.interactable = false;
+		bazaarButtons.blocksRaycasts = false;
 
 		fishboatButtons.alpha = 0f;
 		fishboatButtons.interactable = false;
@@ -87,7 +155,14 @@ public class InfoPanel1 : MonoBehaviour
 			}
 			else if (GameManager.selectedObject.GetComponent<Bazaar>())
 			{
+				Bazaar bazaar = GameManager.selectedObject.GetComponent<Bazaar>();
 
+				bazaarButtons.alpha = 1f;
+				bazaarButtons.interactable = true;
+				bazaarButtons.blocksRaycasts = true;
+
+				bazaar.SellAllFish();
+				
 			}
 		}
 	}
