@@ -3,6 +3,7 @@
 public class Bazaar : OwnableStructure
 {
 
+	public int currentFishPrice;
 
 	void Start ()
 	{
@@ -12,5 +13,10 @@ public class Bazaar : OwnableStructure
 	void Update ()
 	{
 		base.BaseUpdate();
+	}
+
+	public void SellAllFish ()
+	{
+		
 	}
 }
