@@ -41,12 +41,15 @@ public class Fisherboat : Boat
 	int currentWorkshop = 0;
 	bool currentlyFishing;
 
+	void Awake()
+	{
+		base.BaseStart();
 
+	}
 
 	void Start ()
 	{
 		path = GetComponent<Pathfinder>();
-		base.BaseStart();
 		if (!net)
 		{
 			net = transform.FindChild("Net");
@@ -175,7 +178,7 @@ public class Fisherboat : Boat
 			if (currentZone == fiskesoner.Length)
 			{
 				Vector3 fishZoneTarget = new Vector3(useZone.position.x, useZone.position.y, useZone.position.z);
-				print(fishZoneTarget);
+				//print(fishZoneTarget);
 				path.GoToPos(fishZoneTarget);
 				currentZone = 0;
 				currentlyFishing = true;
@@ -241,7 +244,7 @@ public class Fisherboat : Boat
 			if (currentWorkshop == myFaction.workstations.Count)
 			{
 				Vector3 workstationCoords = new Vector3(useWorkshop.position.x, useWorkshop.position.y, useWorkshop.position.z);
-				print(workstationCoords);
+				//print(workstationCoords);
 				workstationCoords.z = 0;
 				path.GoToPos(workstationCoords);
 				oldWorkshop = null;
