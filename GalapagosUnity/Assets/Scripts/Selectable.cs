@@ -71,7 +71,7 @@ public class Selectable : MonoBehaviour
 	void Update ()
 	{
 		//Click selection
-		if (/*!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() &&*/
+		if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() &&
 			(Input.GetMouseButtonDown(0) || Input.GetMouseButtonUp(0)))
 		{
 			RaycastHit hit;

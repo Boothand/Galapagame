@@ -2,8 +2,8 @@
 
 public class Workstation : OwnableStructure
 {
-	public float fishAmount;
-	public float companyMoney;
+	public int fishAmount;
+	public int companyMoney;
 
 	void Start()
 	{
@@ -16,6 +16,14 @@ public class Workstation : OwnableStructure
 	void Update()
 	{
 		base.BaseUpdate();
+	}
+
+	public void SellFish()
+	{
+		int moneyGain = fishAmount * 4;
+
+		stats.ownerFaction.totalMoney += moneyGain;
+		fishAmount = 0;
 	}
 
 	void OnCollisionEnter(Collision col)

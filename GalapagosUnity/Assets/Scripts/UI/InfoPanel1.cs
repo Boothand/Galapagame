@@ -21,6 +21,11 @@ public class InfoPanel1 : MonoBehaviour
 		GameManager.selectedObject.GetComponent<Fisherboat>().BuyWorker();
 	}
 
+	public void WorkstationSellFish()
+	{
+		GameManager.selectedObject.GetComponent<Workstation>().SellFish();
+	}
+
 	void Update ()
 	{
 		//Init
@@ -64,9 +69,12 @@ public class InfoPanel1 : MonoBehaviour
 				infoField2.enabled = true;
 				infoField2.text = "Fish: " + boat.fish + "/" + boat.fishCapacity;
 
-				fishboatButtons.alpha = 1f;
-				fishboatButtons.interactable = true;
-				fishboatButtons.blocksRaycasts = true;
+				if (boat.faction == Stats.Faction.Player)
+				{
+					fishboatButtons.alpha = 1f;
+					fishboatButtons.interactable = true;
+					fishboatButtons.blocksRaycasts = true;
+				}
 			}
 			else if (GameManager.selectedObject.GetComponent<FishZone>())
 			{
