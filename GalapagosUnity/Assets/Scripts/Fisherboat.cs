@@ -8,7 +8,7 @@ public class Fisherboat : Boat
 	Transform net;
 	public bool isFishing;
 	public int workerCapacity = 10;
-	public int fishCapacity = 1000;
+	public int fishCapacity = 25;
 	public int fish = 0;
 	public int workers = 5;
 
@@ -113,6 +113,7 @@ public class Fisherboat : Boat
 
 	void Update()
 	{
+
 		base.BaseUpdate();
 
 		fishSpaceLeft = fishCapacity - fish;
@@ -133,8 +134,8 @@ public class Fisherboat : Boat
 
 			if (fish >= fishCapacity)
 			{
+				currentlyFishing = false;
 				findBase();
-				currentlyFishing = true;
 			}
 		}
 
@@ -243,6 +244,10 @@ public class Fisherboat : Boat
 				print(workstationCoords);
 				workstationCoords.z = 0;
 				path.GoToPos(workstationCoords);
+				oldWorkshop = null;
+				newWorkshop = null;
+				oldZone = null;
+				NewZone = null;
 				currentWorkshop = 0;
 			}
 		}
