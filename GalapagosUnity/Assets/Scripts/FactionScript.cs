@@ -32,15 +32,18 @@ public class FactionScript : MonoBehaviour
 		monthlyDebt += amount;
 	}
 
-	public void RemoveMoney(int amount)
+	public void MonthlyPay()
 	{
-		if (totalMoney >= amount)
+		if (totalMoney >= monthlyDebt)
 		{
-			totalMoney -= amount;
+			totalMoney -= monthlyDebt;
+			monthlyDebt = 0;
 		}
 		else
 		{
-
+			monthlyDebt -= totalMoney;
+			totalMoney = 0;
+			print("Workers are so mad at " + faction.ToString());
 		}
 	}
 

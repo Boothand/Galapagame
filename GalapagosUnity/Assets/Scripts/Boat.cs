@@ -5,12 +5,27 @@ public class Boat : Mover
 
 	public Stats.Faction faction;
 
-	FishZone[] fiskesoner;
+	[SerializeField]
+	FishZone[] fiskesoner = new FishZone[7];
+	[SerializeField]
+	Fisherboat[] boats = new Fisherboat[10];
 	public FactionScript myFaction;
+
+	internal Stats stats;
+	Pathfinder path;
+
+	float ZoneDistanceOld;
+	float ZoneDistanceNew;
+	Transform oldZone;
+	Transform NewZone;
+	Transform useZone;
+
+	int currentZone = 0;
+
 
 	void Start ()
 	{
-		
+		stats = GetComponent<Stats>();
 	}
 
 	internal override void BaseUpdate()
@@ -48,6 +63,7 @@ public class Boat : Mover
 	IEnumerable findZone()
 	{
 		//finds a sone
+		goToZone();
 		yield return null;
 	}
 
@@ -57,12 +73,42 @@ public class Boat : Mover
 		yield return null;
 	}
 
-	void goToZone(Transform zonePosition)
+	void goToZone()
 	{
-		//used for going to zone when closest found
-		
-		//finds a zone, and gets a random position within to go to.
-		
+		//looping through all fishzones
+		foreach(FishZone soner in fiskesoner)
+		{
+			if (!oldZone)
+			{
+				oldZone = soner.transform;
+				currentZone++;
+			}
+			else
+			{
+				NewZone = soner.transform;
+
+				ZoneDistanceOld = Mathf.Sqrt(Mathf.Pow(oldZone.position.x - this.transform.position.x, 2) + Mathf.Pow(oldZone.position.y - this.transform.position.y, 2));
+				ZoneDistanceNew = Mathf.Sqrt(Mathf.Pow(NewZone.position.x - this.transform.position.x, 2) + Mathf.Pow(NewZone.position.y - this.transform.position.y, 2));
+
+				if (ZoneDistanceOld > ZoneDistanceNew)
+				{
+					useZone = oldZone;
+					currentZone++;
+				}
+				else if (ZoneDistanceNew > ZoneDistanceOld)
+				{
+					oldZone = NewZone;
+					useZone = NewZone;
+					currentZone++;
+				}
+			}
+
+			if (currentZone == fiskesoner.Length)
+			{
+				Vector3 fishZoneTarget = new Vector3(useZone.position.x, useZone.position.y, useZone.position.z);
+				path.GoToPos(fishZoneTarget);
+			}
+		}
 	}
 
 	void checkForEmptyBoats()

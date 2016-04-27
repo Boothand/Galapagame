@@ -21,7 +21,10 @@ public class GameManager : MonoBehaviour
 	{
 		if (eventTimer.currentDay == eventTimer.daysinmonth && !monthlyEventHasHappened)
 		{
-			player.RemoveMoney(player.monthlyDebt);
+			player.MonthlyPay();
+			blue.MonthlyPay();
+			red.MonthlyPay();
+			green.MonthlyPay();
 			monthlyEventHasHappened = true;
 		}
 	}
