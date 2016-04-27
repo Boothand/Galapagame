@@ -4,6 +4,8 @@ public class Workstation : OwnableStructure
 {
 	public int fishAmount;
 	public int companyMoney;
+	public GameObject boatPrefab;
+	public Transform boatSpawnPos;
 
 	void Start()
 	{
@@ -24,6 +26,23 @@ public class Workstation : OwnableStructure
 
 		stats.ownerFaction.totalMoney += moneyGain;
 		fishAmount = 0;
+	}
+
+	public void BuyBoat()
+	{
+		int boatPrice = 2000;
+		if (stats.ownerFaction.totalMoney >= boatPrice)
+		{
+			stats.ownerFaction.totalMoney -= boatPrice;
+		}
+
+		GameObject boatInstance = Instantiate(boatPrefab, boatSpawnPos.position, Quaternion.identity) as GameObject;
+
+		Fisherboat boat = boatInstance.GetComponent<Fisherboat>();
+
+		boat.stats.faction = stats.faction;
+		boat.fish = 0;
+		boat.workers = 0;
 	}
 
 	void OnCollisionEnter(Collision col)

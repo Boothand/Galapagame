@@ -26,6 +26,11 @@ public class InfoPanel1 : MonoBehaviour
 		GameManager.selectedObject.GetComponent<Workstation>().SellFish();
 	}
 
+	public void WorkstationBuyBoat()
+	{
+		GameManager.selectedObject.GetComponent<Workstation>().BuyBoat();
+	}
+
 	void Update ()
 	{
 		//Init
