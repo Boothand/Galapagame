@@ -3,14 +3,14 @@
 public class Mover : MonoBehaviour
 {
 	[HideInInspector]
-	//Stats stats;
+	internal Stats stats;
 	public GameManager gameManager;
 	public float speed = 1f;
 	public float turnSpeed = 3f;
 
 	internal void BaseStart()
 	{
-		//stats = GetComponent<Stats>();
+		stats = GetComponent<Stats>();
 		if (!gameManager)
 		{
 			gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
