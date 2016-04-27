@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class FactionScript : MonoBehaviour
 {
 
 	public Stats.Faction faction;
 
-	public Boat[] boats;
-	//public Workstation[] workstations;
+	public List<Fisherboat> boats;
+	public List<Workstation> workstations;
 	
 	public int totalMoney;
 	public int totalFish;
