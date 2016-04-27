@@ -17,9 +17,35 @@ public class Fisherboat : Boat
 
 	IEnumerator fishRoutine;
 
+	//boat AI variables
+
+	[SerializeField]
+	FishZone[] fiskesoner = new FishZone[7];
+
+	Pathfinder path;
+
+	float ZoneDistanceOld;
+	float ZoneDistanceNew;
+	float workshopDistanceOld;
+	float workshopDistanceNew;
+	
+	Transform oldZone;
+	Transform NewZone;
+	Transform useZone;
+	Transform oldWorkshop;
+	Transform newWorkshop;
+	Transform useWorkshop;
+
+
+	int currentZone = 0;
+	int currentWorkshop = 0;
+	bool currentlyFishing;
+
+
+
 	void Start ()
 	{
-		//stats = GetComponent<Stats>();
+		path = GetComponent<Pathfinder>();
 		base.BaseStart();
 		if (!net)
 		{
@@ -96,6 +122,127 @@ public class Fisherboat : Boat
 		{
 			fishSpaceLeft = 0;
 			fish = fishCapacity;
+		}
+
+		if (myFaction != gameManager.player)
+		{
+			if (!currentlyFishing)
+			{
+				isBoatEmpty();
+			}
+
+			if (fish == fishCapacity)
+			{
+				findBase();
+			}
+		}
+
+	}
+
+
+	void goToZone()
+	{
+		//looping through all fishzones
+		foreach (FishZone soner in fiskesoner)
+		{
+			if (!oldZone)
+			{
+				oldZone = soner.transform;
+				currentZone++;
+			}
+			else
+			{
+				NewZone = soner.transform;
+
+				ZoneDistanceOld = Mathf.Sqrt(Mathf.Pow(oldZone.position.x - this.transform.position.x, 2) + Mathf.Pow(oldZone.position.y - this.transform.position.y, 2));
+				ZoneDistanceNew = Mathf.Sqrt(Mathf.Pow(NewZone.position.x - this.transform.position.x, 2) + Mathf.Pow(NewZone.position.y - this.transform.position.y, 2));
+
+				if (ZoneDistanceOld < ZoneDistanceNew)
+				{
+					useZone = oldZone;
+					currentZone++;
+				}
+				else if (ZoneDistanceNew < ZoneDistanceOld)
+				{
+					oldZone = NewZone;
+					useZone = NewZone;
+					currentZone++;
+				}
+			}
+
+			if (currentZone == fiskesoner.Length)
+			{
+				Vector3 fishZoneTarget = new Vector3(useZone.position.x, useZone.position.y, useZone.position.z);
+				print(fishZoneTarget);
+				path.GoToPos(fishZoneTarget);
+				currentZone = 0;
+				currentlyFishing = true;
+			}
+		}
+	}
+
+	void isBoatEmpty()
+	{
+		// checks for boats that can be sent to a zone.
+		//this one must be done before goToZone()
+
+		if (fish < fishCapacity)
+		{
+			goToZone();
+		}
+		else
+			return;
+	}
+
+	void fullBoat()
+	{
+		if (fish == fishCapacity)
+		{
+			findBase();
+			currentlyFishing = true;
+		}
+	}
+
+	void findBase()
+	{
+		foreach(Workstation workshop in myFaction.workstations)
+		{
+			if (!oldWorkshop)
+			{
+				oldWorkshop = workshop.transform;
+				currentWorkshop++;
+				useWorkshop = oldWorkshop;
+				workshopDistanceOld = Mathf.Sqrt(Mathf.Pow(oldWorkshop.position.x - transform.position.x, 2) + Mathf.Pow(oldWorkshop.position.y - transform.position.y, 2));
+			}
+			else
+			{
+				newWorkshop = workshop.transform;
+
+				workshopDistanceOld = Mathf.Sqrt(Mathf.Pow(oldWorkshop.position.x - transform.position.x, 2) + Mathf.Pow(oldWorkshop.position.y - transform.position.y, 2));
+				workshopDistanceNew = Mathf.Sqrt(Mathf.Pow(newWorkshop.position.x - transform.position.x, 2) + Mathf.Pow(newWorkshop.position.y - transform.position.y, 2));
+
+				if (workshopDistanceOld < workshopDistanceNew)
+				{
+					useWorkshop = oldWorkshop;
+					currentWorkshop++;
+					print(useWorkshop);
+				}
+				else if (workshopDistanceNew < workshopDistanceOld)
+				{
+					useWorkshop = newWorkshop;
+					oldWorkshop = newWorkshop;
+					currentWorkshop++;
+					print(useWorkshop);
+				}
+			}
+
+			if (currentWorkshop == myFaction.workstations.Count)
+			{
+				Vector3 workstationCoords = new Vector3(useWorkshop.position.x, useWorkshop.position.y, useWorkshop.position.z);
+				print(workstationCoords);
+				path.GoToPos(workstationCoords);
+				currentWorkshop = 0;
+			}
 		}
 	}
 }
