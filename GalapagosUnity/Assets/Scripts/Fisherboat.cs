@@ -241,6 +241,7 @@ public class Fisherboat : Boat
 			{
 				Vector3 workstationCoords = new Vector3(useWorkshop.position.x, useWorkshop.position.y, useWorkshop.position.z);
 				print(workstationCoords);
+				workstationCoords.z = 0;
 				path.GoToPos(workstationCoords);
 				currentWorkshop = 0;
 			}

@@ -196,14 +196,14 @@ public class Pathfinder : MonoBehaviour
 		{
 			if (hit.transform.root.GetInstanceID() != transform.root.GetInstanceID() &&
 				hit.transform.GetComponent<Stats>() &&
-				hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype)
+				(hit.transform.GetComponent<Stats>().navtype == GetComponent<Stats>().navtype ||
+				hit.transform.GetComponent<Workstation>()))
 			{
 				finalTargetPos = pos;
 				hasTarget = true;
 
 				waypoints.Clear();
 				waypoints = GetQuickestWaypoint();
-
 				if (waypoints.Count > 0)
 				{
 					subTargetPos = waypoints.Dequeue();
