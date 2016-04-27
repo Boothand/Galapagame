@@ -5,7 +5,13 @@ public class GameManager : MonoBehaviour
 	public static Stats selectedObject;
 	public TimeScript eventTimer;
 
-	
+	public FactionScript player;
+	public FactionScript blue;
+	public FactionScript red;
+	public FactionScript green;
+
+	bool monthlyEventHasHappened;
+
 	void Start ()
 	{
 	
@@ -13,9 +19,10 @@ public class GameManager : MonoBehaviour
 	
 	void Update ()
 	{
-		if (eventTimer.currentDay == eventTimer.daysinmonth)
+		if (eventTimer.currentDay == eventTimer.daysinmonth && !monthlyEventHasHappened)
 		{
-			//utfør event her.
+			player.RemoveMoney(player.monthlyDebt);
+			monthlyEventHasHappened = true;
 		}
 	}
 }

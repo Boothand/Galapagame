@@ -8,7 +8,7 @@ public class Fisherboat : Boat
 	Transform net;
 	public bool isFishing;
 
-	public Stats stats;
+	[HideInInspector] public Stats stats;
 
 	public int workerCapacity = 10;
 	public int fishCapacity = 1000;
@@ -83,6 +83,7 @@ public class Fisherboat : Boat
 		if (workers < workerCapacity)
 		{
 			workers++;
+			myFaction.AddDebt(100);
 			//Tap penga, referanse til factionskript.
 		}
 	}

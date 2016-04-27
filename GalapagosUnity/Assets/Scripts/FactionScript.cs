@@ -1,18 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FactionScript : MonoBehaviour {
+public class FactionScript : MonoBehaviour
+{
 
 	public Stats.Faction faction;
 
-	int totalMoney;
-	int totalFish;
-	int totalWorkers;
+	public Boat[] boats;
+	//public Workstation[] workstations;
+	
+	public int totalMoney;
+	public int totalFish;
+	public int totalWorkers;
 
-	int totalBoats;
-	int totalWorkstations;
+	public int totalBoats;
+	public int totalWorkstations;
 
-	// Use this for initialization
+	public int monthlyDebt;
+
+
 	void Start () 
 	{
 		totalWorkstations = 1;
@@ -21,6 +27,22 @@ public class FactionScript : MonoBehaviour {
 		totalMoney = 1000;
 	}
 
+	public void AddDebt(int amount)
+	{
+		monthlyDebt += amount;
+	}
+
+	public void RemoveMoney(int amount)
+	{
+		if (totalMoney >= amount)
+		{
+			totalMoney -= amount;
+		}
+		else
+		{
+
+		}
+	}
 
 	// Update is called once per frame
 	void Update () 

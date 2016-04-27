@@ -4,15 +4,20 @@ public class Mover : MonoBehaviour
 {
 	[HideInInspector]
 	//Stats stats;
+	public GameManager gameManager;
 	public float speed = 1f;
 	public float turnSpeed = 3f;
 
-	internal void BaseStart ()
+	internal void BaseStart()
 	{
 		//stats = GetComponent<Stats>();
+		if (!gameManager)
+		{
+			gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		}
 	}
 	
-	internal void BaseUpdate ()
+	virtual internal void BaseUpdate ()
 	{
 		
 	}
