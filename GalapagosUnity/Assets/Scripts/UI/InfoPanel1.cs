@@ -87,9 +87,12 @@ public class InfoPanel1 : MonoBehaviour
 			{
 				Workstation station = GameManager.selectedObject.GetComponent<Workstation>();
 
-				workstationButtons.alpha = 1f;
-				workstationButtons.interactable = true;
-				workstationButtons.blocksRaycasts = true;
+				if (station.stats.faction == Stats.Faction.Player)
+				{
+					workstationButtons.alpha = 1f;
+					workstationButtons.interactable = true;
+					workstationButtons.blocksRaycasts = true;
+				}
 				infoField1.enabled = true;
 				infoField1.text = "Fish in storage: " + station.fishAmount;
 			}
