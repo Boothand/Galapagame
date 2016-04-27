@@ -131,9 +131,10 @@ public class Fisherboat : Boat
 				isBoatEmpty();
 			}
 
-			if (fish == fishCapacity)
+			if (fish >= fishCapacity)
 			{
 				findBase();
+				currentlyFishing = true;
 			}
 		}
 
@@ -194,14 +195,14 @@ public class Fisherboat : Boat
 			return;
 	}
 
-	void fullBoat()
-	{
-		if (fish == fishCapacity)
-		{
-			findBase();
-			currentlyFishing = true;
-		}
-	}
+	//void fullBoat()
+	//{
+	//	if (fish == fishCapacity)
+	//	{
+	//		findBase();
+	//		currentlyFishing = true;
+	//	}
+	//}
 
 	void findBase()
 	{
