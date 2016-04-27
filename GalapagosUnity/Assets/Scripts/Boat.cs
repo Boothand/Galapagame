@@ -3,6 +3,10 @@ using System.Collections;
 public class Boat : Mover
 {
 
+	public Stats.Faction faction;
+
+	FishZone[] fiskesoner;
+
 	void Start ()
 	{
 		
