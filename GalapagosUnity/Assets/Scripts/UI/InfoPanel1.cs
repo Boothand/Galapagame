@@ -16,9 +16,9 @@ public class InfoPanel1 : MonoBehaviour
 		
 	}
 
-	public void FishBoatBuyWorker()
+	public void FishBoatBuyWorker(int amount)
 	{
-		GameManager.selectedObject.GetComponent<Fisherboat>().BuyWorker();
+		GameManager.selectedObject.GetComponent<Fisherboat>().BuyWorker(amount);
 	}
 
 	public void WorkstationSellFish()

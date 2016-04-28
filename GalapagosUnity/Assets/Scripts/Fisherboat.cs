@@ -43,7 +43,7 @@ public class Fisherboat : Boat
 
 	void Awake()
 	{
-		base.BaseStart();
+		BaseStart();
 
 	}
 
@@ -56,6 +56,7 @@ public class Fisherboat : Boat
 		}
 
 		net.gameObject.SetActive(false);
+		myFaction.AddDebt(200 * workers);
 	}
 
 
@@ -104,12 +105,22 @@ public class Fisherboat : Boat
 		}
 	}
 
-	public void BuyWorker()
+	public void BuyWorker(int amount)
 	{
-		if (workers < workerCapacity)
+		if (workers == 0 && amount < 0)
 		{
-			workers++;
-			myFaction.AddDebt(200);
+			return;
+		}
+
+		if (workers == workerCapacity && amount > 0)
+		{
+			return;
+		}
+
+		if (workers <= workerCapacity)
+		{
+			workers += amount;
+			myFaction.AddDebt(200 * amount);
 			//Tap penga, referanse til factionskript.
 		}
 	}

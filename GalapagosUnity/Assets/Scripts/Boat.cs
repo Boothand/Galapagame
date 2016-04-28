@@ -11,6 +11,28 @@ public class Boat : Mover
 		BaseStart();
 	}
 
+	internal override void BaseStart()
+	{
+		base.BaseStart();
+
+		if (stats.faction == Stats.Faction.Player)
+		{
+			myFaction = gameManager.player;
+		}
+		else if (stats.faction == Stats.Faction.Blue)
+		{
+			myFaction = gameManager.blue;
+		}
+		else if (stats.faction == Stats.Faction.Red)
+		{
+			myFaction = gameManager.red;
+		}
+		else if (stats.faction == Stats.Faction.Green)
+		{
+			myFaction = gameManager.green;
+		}
+	}
+
 	internal override void BaseUpdate()
 	{
 		base.BaseUpdate();
