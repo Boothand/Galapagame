@@ -14,6 +14,6 @@ public class MoneyUI : MonoBehaviour
 	
 	void Update()
 	{
-		text.text = faction.monthlyDebt + " / " + faction.totalMoney.ToString() + " Debt/Money";
+		text.text = faction.monthlyDebt + " / " + faction.totalMoney.ToString() + " Salary/Money";
 	}
 }

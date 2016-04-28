@@ -31,10 +31,8 @@ public class Workstation : OwnableStructure
 	public void BuyBoat()
 	{
 		int boatPrice = 2000;
-		if (stats.ownerFaction.totalMoney >= boatPrice)
-		{
-			stats.ownerFaction.totalMoney -= boatPrice;
-		}
+
+		stats.ownerFaction.totalMoney -= boatPrice;
 
 		GameObject boatInstance = Instantiate(boatPrefab, boatSpawnPos.position, Quaternion.identity) as GameObject;
 

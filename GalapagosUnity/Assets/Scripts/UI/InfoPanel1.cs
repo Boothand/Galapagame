@@ -74,7 +74,7 @@ public class InfoPanel1 : MonoBehaviour
 				infoField2.enabled = true;
 				infoField2.text = "Fish: " + boat.fish + "/" + boat.fishCapacity;
 
-				if (boat.faction == Stats.Faction.Player)
+				if (boat.stats.faction == Stats.Faction.Player)
 				{
 					fishboatButtons.alpha = 1f;
 					fishboatButtons.interactable = true;
