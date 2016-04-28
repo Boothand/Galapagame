@@ -44,6 +44,11 @@ public class FishZone : MonoBehaviour
 				fishAmount += respawnAmount;
 				timer = 0;
 			}
+
+			if (fishAmount <= 0)
+			{
+				Destroy(gameObject);
+			}
 		}
 	}
 }

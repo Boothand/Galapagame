@@ -19,6 +19,8 @@ public class FactionScript : MonoBehaviour
 
 	public int monthlyDebt;
 
+	int strikes;
+
 
 	void Start () 
 	{
@@ -35,16 +37,17 @@ public class FactionScript : MonoBehaviour
 
 	public void MonthlyPay()
 	{
-		if (totalMoney >= monthlyDebt)
+		if (totalMoney < monthlyDebt)
 		{
-			totalMoney -= monthlyDebt;
-			monthlyDebt = 0;
-		}
-		else
-		{
-			monthlyDebt -= totalMoney;
-			totalMoney = 0;
+			strikes++;
 			print("Workers are so mad at " + faction.ToString());
+		}
+
+		totalMoney -= monthlyDebt;
+
+		if (strikes > 2)
+		{
+			GameObject.Find("GameManager").GetComponent<GameManager>().GameOver();
 		}
 	}
 

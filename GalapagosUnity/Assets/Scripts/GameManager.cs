@@ -16,6 +16,13 @@ public class GameManager : MonoBehaviour
 	{
 	
 	}
+
+	public void GameOver()
+	{
+		print("You lose.");
+		Camera.main.enabled = false;
+		//Ting
+	}
 	
 	void Update ()
 	{
@@ -26,6 +33,10 @@ public class GameManager : MonoBehaviour
 			red.MonthlyPay();
 			green.MonthlyPay();
 			monthlyEventHasHappened = true;
+		}
+		if (eventTimer.currentDay != eventTimer.daysinmonth)
+		{
+			monthlyEventHasHappened = false;
 		}
 	}
 }

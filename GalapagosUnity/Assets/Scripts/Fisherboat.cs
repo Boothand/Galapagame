@@ -109,7 +109,7 @@ public class Fisherboat : Boat
 		if (workers < workerCapacity)
 		{
 			workers++;
-			myFaction.AddDebt(100);
+			myFaction.AddDebt(531);
 			//Tap penga, referanse til factionskript.
 		}
 	}
