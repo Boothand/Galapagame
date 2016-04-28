@@ -82,11 +82,13 @@ public class FactionScript : MonoBehaviour
 		}
 		if (totalWorkersToLeave > 0)
 		{
-			print("This happened");
-			GameObject noteInstance = Instantiate(noteText, noteText.transform.position, Quaternion.identity) as GameObject;
-			noteInstance.transform.parent = GameObject.Find("UI").transform;
-			noteInstance.transform.localPosition = noteText.transform.position;
-			noteInstance.GetComponent<NotificationText>().text.text = totalWorkersToLeave + " workers left " + faction.ToString() + " due to anger level: " + workerMadLevel;
+			if (faction == Stats.Faction.Player)
+			{
+				GameObject noteInstance = Instantiate(noteText, noteText.transform.position, Quaternion.identity) as GameObject;
+				noteInstance.transform.parent = GameObject.Find("UI").transform;
+				noteInstance.transform.localPosition = noteText.transform.position;
+				noteInstance.GetComponent<NotificationText>().text.text = totalWorkersToLeave + " workers left " + faction.ToString() + " due to anger level: " + workerMadLevel;
+			}
 		}
 	}
 

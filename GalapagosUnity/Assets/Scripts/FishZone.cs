@@ -24,7 +24,7 @@ public class FishZone : MonoBehaviour
 
 	public int GetFished(int workersOnBoard, int shipType = 1)
 	{
-		int loss = (int)(workersOnBoard * shipType * zoneTypeFactor) / 2;
+		int loss = Mathf.FloorToInt((workersOnBoard * shipType * zoneTypeFactor) / 1.75f);
 		fishAmount -= loss;
 		
 		return loss;

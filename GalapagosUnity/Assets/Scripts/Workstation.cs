@@ -6,6 +6,7 @@ public class Workstation : OwnableStructure
 	public int companyMoney;
 	public GameObject boatPrefab;
 	public Transform boatSpawnPos;
+	public int pricePerFish = 4;
 
 	void Start()
 	{
@@ -22,7 +23,7 @@ public class Workstation : OwnableStructure
 
 	public void SellFish()
 	{
-		int moneyGain = fishAmount * 8;
+		int moneyGain = fishAmount * pricePerFish;
 
 		stats.ownerFaction.totalMoney += moneyGain;
 		fishAmount = 0;
