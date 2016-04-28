@@ -20,14 +20,29 @@ public class FactionScript : MonoBehaviour
 	public int monthlyDebt;
 
 	int strikes;
+	public int workerMadLevel;
+	public int firedWorkers;
+	public int workerSalary = 500;
 
+	public GameObject noteText;
 
 	void Start () 
 	{
 		totalWorkstations = 1;
 		totalBoats = 1;
 		totalWorkers = 5;
-		totalMoney = 1000;
+		totalMoney = 5000;
+
+		Fisherboat[] allBoats = GameObject.FindObjectsOfType<Fisherboat>();
+
+		foreach (Fisherboat boat in allBoats)
+		{
+			if (boat.myFaction == this)
+			{
+				boats.Add(boat);
+			}
+		}
+
 	}
 
 	public void AddDebt(int amount)
@@ -39,19 +54,43 @@ public class FactionScript : MonoBehaviour
 	{
 		if (totalMoney < monthlyDebt)
 		{
-			strikes++;
+			//strikes++;
+			workerMadLevel++;
 			print("Workers are so mad at " + faction.ToString());
 		}
 
 		totalMoney -= monthlyDebt;
 
-		if (strikes > 2)
+		if (workerMadLevel > 0)
 		{
-			GameObject.Find("GameManager").GetComponent<GameManager>().GameOver();
+			WorkersQuit();
+			//GameObject.Find("GameManager").GetComponent<GameManager>().GameOver();
 		}
 	}
 
-	// Update is called once per frame
+	public void WorkersQuit()
+	{
+		int totalWorkersToLeave = 0;
+
+		foreach (Fisherboat boat in boats)
+		{
+			int workersToLeave = boat.workers - Mathf.FloorToInt(boat.workers / workerMadLevel);
+			totalWorkersToLeave += workersToLeave;
+
+			boat.workers -= workersToLeave;
+			AddDebt(workersToLeave * -workerSalary);
+		}
+		if (totalWorkersToLeave > 0)
+		{
+			print("This happened");
+			GameObject noteInstance = Instantiate(noteText, noteText.transform.position, Quaternion.identity) as GameObject;
+			noteInstance.transform.parent = GameObject.Find("UI").transform;
+			noteInstance.transform.localPosition = noteText.transform.position;
+			noteInstance.GetComponent<NotificationText>().text.text = totalWorkersToLeave + " workers left " + faction.ToString() + " due to anger level: " + workerMadLevel;
+		}
+	}
+
+
 	void Update () 
 	{
 	

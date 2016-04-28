@@ -22,7 +22,7 @@ public class Workstation : OwnableStructure
 
 	public void SellFish()
 	{
-		int moneyGain = fishAmount * 4;
+		int moneyGain = fishAmount * 8;
 
 		stats.ownerFaction.totalMoney += moneyGain;
 		fishAmount = 0;
@@ -41,6 +41,8 @@ public class Workstation : OwnableStructure
 		boat.stats.faction = stats.faction;
 		boat.fish = 0;
 		boat.workers = 0;
+
+		stats.ownerFaction.boats.Add(boat);
 	}
 
 	void OnCollisionEnter(Collision col)
