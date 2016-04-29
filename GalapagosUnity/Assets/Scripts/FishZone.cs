@@ -5,7 +5,7 @@ public class FishZone : MonoBehaviour
 	public int fishAmount = 20000;
 	public int maxFishAmount = 30000;
 	public float respawnTime = 2f;
-	public int respawnAmount = 2;
+	public int respawnAmount = 9;
 	float timer;
 	int zoneTypeFactor;
 	public ZoneType zoneType = ZoneType.Medium;
@@ -24,7 +24,7 @@ public class FishZone : MonoBehaviour
 
 	public int GetFished(int workersOnBoard, int shipType = 1)
 	{
-		int loss = (int)(workersOnBoard * shipType * zoneTypeFactor) / 2;
+		int loss = Mathf.FloorToInt((workersOnBoard * shipType * zoneTypeFactor) / 1.2f);
 		fishAmount -= loss;
 		
 		return loss;
@@ -43,6 +43,11 @@ public class FishZone : MonoBehaviour
 			{
 				fishAmount += respawnAmount;
 				timer = 0;
+			}
+
+			if (fishAmount <= 0)
+			{
+				Destroy(gameObject);
 			}
 		}
 	}

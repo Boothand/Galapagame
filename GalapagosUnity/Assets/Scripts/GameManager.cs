@@ -9,12 +9,20 @@ public class GameManager : MonoBehaviour
 	public FactionScript blue;
 	public FactionScript red;
 	public FactionScript green;
+	public GameObject escapeMenu;
 
 	bool monthlyEventHasHappened;
 
 	void Start ()
 	{
-	
+		escapeMenu.SetActive(false);
+	}
+
+	public void GameOver()
+	{
+		print("You lose.");
+		Camera.main.enabled = false;
+		//Ting
 	}
 	
 	void Update ()
@@ -26,6 +34,24 @@ public class GameManager : MonoBehaviour
 			red.MonthlyPay();
 			green.MonthlyPay();
 			monthlyEventHasHappened = true;
+		}
+		if (eventTimer.currentDay != eventTimer.daysinmonth)
+		{
+			monthlyEventHasHappened = false;
+		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			escapeMenu.SetActive(!escapeMenu.activeSelf);
+
+			if (Time.timeScale == 1)
+			{
+				Time.timeScale = 0;
+			}
+			else
+			{
+				Time.timeScale = 1;
+			}
 		}
 	}
 }

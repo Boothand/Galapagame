@@ -8,7 +8,7 @@ public class Mover : MonoBehaviour
 	public float speed = 1f;
 	public float turnSpeed = 3f;
 
-	internal void BaseStart()
+	virtual internal void BaseStart()
 	{
 		stats = GetComponent<Stats>();
 		if (!gameManager)

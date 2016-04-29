@@ -2,9 +2,6 @@
 using System.Collections;
 public class Boat : Mover
 {
-
-	public Stats.Faction faction;
-
 	[SerializeField]
 	public FactionScript myFaction;
 
@@ -14,23 +11,45 @@ public class Boat : Mover
 		BaseStart();
 	}
 
+	internal override void BaseStart()
+	{
+		base.BaseStart();
+
+		if (stats.faction == Stats.Faction.Player)
+		{
+			myFaction = gameManager.player;
+		}
+		else if (stats.faction == Stats.Faction.Blue)
+		{
+			myFaction = gameManager.blue;
+		}
+		else if (stats.faction == Stats.Faction.Red)
+		{
+			myFaction = gameManager.red;
+		}
+		else if (stats.faction == Stats.Faction.Green)
+		{
+			myFaction = gameManager.green;
+		}
+	}
+
 	internal override void BaseUpdate()
 	{
 		base.BaseUpdate();
 
-		if (faction == Stats.Faction.Player)
+		if (stats.faction == Stats.Faction.Player)
 		{
 			myFaction = gameManager.player;
 		}
-		else if (faction == Stats.Faction.Blue)
+		else if (stats.faction == Stats.Faction.Blue)
 		{
 			myFaction = gameManager.blue;
 		}
-		else if (faction == Stats.Faction.Red)
+		else if (stats.faction == Stats.Faction.Red)
 		{
 			myFaction = gameManager.red;
 		}
-		else if (faction == Stats.Faction.Green)
+		else if (stats.faction == Stats.Faction.Green)
 		{
 			myFaction = gameManager.green;
 		}
