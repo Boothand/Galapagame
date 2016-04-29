@@ -43,6 +43,15 @@ public class GameManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
 			escapeMenu.SetActive(!escapeMenu.activeSelf);
+
+			if (Time.timeScale == 1)
+			{
+				Time.timeScale = 0;
+			}
+			else
+			{
+				Time.timeScale = 1;
+			}
 		}
 	}
 }
