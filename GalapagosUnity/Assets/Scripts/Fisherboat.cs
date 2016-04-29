@@ -57,6 +57,7 @@ public class Fisherboat : Boat
 
 		net.gameObject.SetActive(false);
 		myFaction.AddDebt(myFaction.workerSalary * workers);
+		print(myFaction.workerSalary);
 	}
 
 

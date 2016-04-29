@@ -22,12 +22,13 @@ public class FactionScript : MonoBehaviour
 	int strikes;
 	public int workerMadLevel;
 	public int firedWorkers;
-	public int workerSalary = 500;
+	[HideInInspector] public int workerSalary = 250;
 
 	public GameObject noteText;
 
 	void Start () 
 	{
+		workerSalary = 250;
 		totalWorkstations = 1;
 		totalBoats = 1;
 		totalWorkers = 5;
