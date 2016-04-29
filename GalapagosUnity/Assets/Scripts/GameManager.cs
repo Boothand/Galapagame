@@ -9,12 +9,13 @@ public class GameManager : MonoBehaviour
 	public FactionScript blue;
 	public FactionScript red;
 	public FactionScript green;
+	public GameObject escapeMenu;
 
 	bool monthlyEventHasHappened;
 
 	void Start ()
 	{
-	
+		escapeMenu.SetActive(false);
 	}
 
 	public void GameOver()
@@ -37,6 +38,11 @@ public class GameManager : MonoBehaviour
 		if (eventTimer.currentDay != eventTimer.daysinmonth)
 		{
 			monthlyEventHasHappened = false;
+		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			escapeMenu.SetActive(!escapeMenu.activeSelf);
 		}
 	}
 }
