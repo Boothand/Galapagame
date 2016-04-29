@@ -57,15 +57,17 @@ public class FactionScript : MonoBehaviour
 			//strikes++;
 			workerMadLevel++;
 			print("Workers are so mad at " + faction.ToString());
+
+			if (workerMadLevel > 0)
+			{
+				WorkersQuit();
+				//GameObject.Find("GameManager").GetComponent<GameManager>().GameOver();
+			}
 		}
 
 		totalMoney -= monthlyDebt;
 
-		if (workerMadLevel > 0)
-		{
-			WorkersQuit();
-			//GameObject.Find("GameManager").GetComponent<GameManager>().GameOver();
-		}
+		
 	}
 
 	public void WorkersQuit()

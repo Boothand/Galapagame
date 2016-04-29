@@ -5,7 +5,7 @@ public class FishZone : MonoBehaviour
 	public int fishAmount = 20000;
 	public int maxFishAmount = 30000;
 	public float respawnTime = 2f;
-	public int respawnAmount = 2;
+	public int respawnAmount = 15;
 	float timer;
 	int zoneTypeFactor;
 	public ZoneType zoneType = ZoneType.Medium;
